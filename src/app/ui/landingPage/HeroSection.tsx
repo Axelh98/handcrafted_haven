@@ -1,5 +1,6 @@
 
-import styles from './LandingPage.module.css'
+import styles from './LandingPage.module.scss'
+
 
 export default function HeroSection() {
   return (
