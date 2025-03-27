@@ -1,12 +1,12 @@
 
 import styles from './LandingPage.module.scss'
-
+import CarouselCard  from './carouselHero'
 
 export default function HeroSection() {
   return (
     <section className={styles.hero}>
-      <div className={styles.imageContainer}>
-        <img src="/landingPage/heroImage.jpg" alt="Hero Image" />
+      <div className={styles.heroImage}>
+        <img src="/landingPage/heroImage.jpg" alt="hero image" />
       </div>
       <div className={styles.textContainer}>
         <h1 className={styles.title}>Welcome to Handcrafted Haven</h1>

@@ -14,15 +14,7 @@
   width: 100%;
   height: auto;
   margin: 0 auto;
-  background: var(--color-background-accent);
   box-shadow: var(--shadow-medium);
-}
-
-.container {
-  max-width: 80rem;
-  height: auto;
-  margin: 0 auto;
-  padding: 0 1.25rem;
 }
 
 .navbar {
@@ -72,8 +64,8 @@
   height: auto;
   margin: 0 auto;
   padding-block: 1rem;
-  background: white;
-  padding-inline: 1rem;
+  background: var(--color-white);
+  padding-inline: 2rem;
   border-radius: 3rem;
 
   &-form {
@@ -93,15 +85,14 @@
     line-height: inherit;
     width: 100%;
     height: 100%;
-    padding-block: 0.75rem;
+    padding: 1rem;
     border: none;
     outline: none;
-    background: transparent;
+    background: var(--color-white-bg);
   }
 
   &-icon {
-    height: 18px;
-    width: 18px;
+    width: 2rem;
   }
 
   // Responsive Media Query
@@ -117,7 +108,6 @@
     }
   }
 }
-
 
 /* MENU STYLES */
 .menu {
@@ -155,7 +145,8 @@
     color: var(--color-black-500);
     transition: all 0.35s ease-in-out;
 
-    &:hover {
+    &:hover,
+    &:focus {
       outline: none;
       color: var(--color-red-400);
     }
@@ -190,24 +181,28 @@
 /* HERO SECTION STYLES <<<<<<<<< */
 /* HERO SECTION STYLES <<<<<<<<< */
 .hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  width: 100%;
+  max-height: 700px;
   padding: 2rem;
   background-color: var(--color-background-accent);
 }
 
-.imageContainer {
-  flex: 1;
-}
-
-.image {
+.heroImage {
   width: 100%;
-  height: auto;
+  height: 700px;
+  overflow: hidden; /* Asegura que la imagen no salga del contenedor */
 }
 
+.heroImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ajusta la imagen para que ocupe todo el contenedor sin deformarse */
+}
 .textContainer {
-  flex: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   text-align: center;
 }
 
@@ -235,3 +230,4 @@
 .ctaButton:hover {
   background-color: var(--color-secondary);
 }
+
