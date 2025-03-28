@@ -2,8 +2,7 @@
 import './Cart.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faMinus, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-// import imagen vase
-import vase from '/objects/vase.svg';
+
 
 export default function Cart() {
   return (
