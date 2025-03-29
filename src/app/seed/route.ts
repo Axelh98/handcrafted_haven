@@ -172,59 +172,59 @@ async function seedRates() {
 
 export async function GET() {
 	try {
-		// IMPORTANT! Uncomment and execute first, recomment after
-		// const result = await sql.begin((sql) => [seedUsers(), seedCategories()]);
-		// const result2 = await sql.begin((sql) => [seedProfiles()]);
 
-		// IMPORTANT! Uncomment and execute second, recomment after
-		// const result3 = await sql.begin((sql) => [seedProducts()]);
-		// const result4 = await sql.begin((sql) => [seedReviews()]);
-		// const result5 = await sql.begin((sql) => [seedRates()]);
+		const result = await sql.begin((sql) => [seedUsers(), seedCategories()]);
+		const result2 = await sql.begin((sql) => [seedProfiles()]);
 
-		// IMPORTANT! Uncomment and execute third, recomment after
-		// await Promise.all(
-		// 	reviews2.map(
-		// 		(review) => sql`
-		//       INSERT INTO reviews (name, content, post_date, product_id)
-		//       VALUES (${review.name}, ${review.content}, ${review.post_date}, ${review.product_id})
-		//       ON CONFLICT (id) DO NOTHING;
-		//     `
-		// 	)
-		// );
 
-		// await Promise.all(
-		// 	rates2.map(
-		// 		(rate) => sql`
-		//       INSERT INTO rates (rate, rate_date, product_id)
-		//       VALUES (${rate.rate}, ${rate.rate_date}, ${rate.product_id})
-		//       ON CONFLICT (id) DO NOTHING;
-		//     `
-		// 	)
-		// );
+		const result3 = await sql.begin((sql) => [seedProducts()]);
+		const result4 = await sql.begin((sql) => [seedReviews()]);
+		const result5 = await sql.begin((sql) => [seedRates()]);
 
-		// IMPORTANT! Uncomment and execute fourth, recomment after
-		// await Promise.all(
-		// 	reviews3.map(
-		// 		(review) => sql`
-		//       INSERT INTO reviews (name, content, post_date, product_id)
-		//       VALUES (${review.name}, ${review.content}, ${review.post_date}, ${review.product_id})
-		//       ON CONFLICT (id) DO NOTHING;
-		//     `
-		// 	)
-		// );
+		await Promise.all(
+			reviews2.map(
+				(review) => sql`
+		      INSERT INTO reviews (name, content, post_date, product_id)
+		      VALUES (${review.name}, ${review.content}, ${review.post_date}, ${review.product_id})
+		      ON CONFLICT (id) DO NOTHING;
+		    `
+			)
+		);
 
-		// await Promise.all(
-		// 	rates3.map(
-		// 		(rate) => sql`
-		//       INSERT INTO rates (rate, rate_date, product_id)
-		//       VALUES (${rate.rate}, ${rate.rate_date}, ${rate.product_id})
-		//       ON CONFLICT (id) DO NOTHING;
-		//     `
-		// 	)
-		// );
+		 await Promise.all(
+		 	rates2.map(
+		 		(rate) => sql`
+		       INSERT INTO rates (rate, rate_date, product_id)
+		       VALUES (${rate.rate}, ${rate.rate_date}, ${rate.product_id})
+		       ON CONFLICT (id) DO NOTHING;
+		     `
+		 	)
+		 );
+
+		 
+		 await Promise.all(
+		 	reviews3.map(
+		 		(review) => sql`
+		       INSERT INTO reviews (name, content, post_date, product_id)
+		       VALUES (${review.name}, ${review.content}, ${review.post_date}, ${review.product_id})
+		       ON CONFLICT (id) DO NOTHING;
+		     `
+		 	)
+		 );
+
+		 await Promise.all(
+		 	rates3.map(
+		 		(rate) => sql`
+		       INSERT INTO rates (rate, rate_date, product_id)
+		       VALUES (${rate.rate}, ${rate.rate_date}, ${rate.product_id})
+		       ON CONFLICT (id) DO NOTHING;
+		     `
+		 	)
+		 );
 
 		return Response.json({ message: 'Database seeded successfully' });
 	} catch (error) {
 		return Response.json({ error }, { status: 500 });
 	}
 }
+
