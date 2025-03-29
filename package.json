@@ -18,7 +18,7 @@
     "bootstrap": "^5.3.3",
     "classnames": "^2.5.1",
     "flowbite-react": "^0.10.2",
-    "next": "^15.0.0-rc.1",
+    "next": "^15.2.4",
     "postgres": "^3.4.5",
     "react": "^19.1.0-canary-4280563b-20250326",
     "react-bootstrap": "^2.10.9",

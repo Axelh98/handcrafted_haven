@@ -1,6 +1,5 @@
 import { z } from 'zod';
 
-
 interface User {
 	id: string;
 	name: string;
@@ -80,4 +79,3 @@ export const SignupFormSchema = z.object({
         message?: string
       }
     | undefined
-  
