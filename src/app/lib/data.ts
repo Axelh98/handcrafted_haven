@@ -23,6 +23,20 @@ export async function fetchBestRatedProducts(limit = 0) {
 		return products;
 	} catch (error) {
 		console.error('Database Error:', error);
-		throw new Error('Failed to fetch the best rated products.');
+		throw new Error('Failed to fetch best rated products.');
+	}
+}
+
+export async function fetchCategories() {
+	try {
+		const data = await sql`
+      SELECT *
+      FROM categories
+    `;
+
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch categories.');
 	}
 }

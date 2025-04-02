@@ -1,16 +1,13 @@
 .header {
 	width: 100%;
 
+	padding-inline: 0 1rem;
+
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 
 	background-color: var(--color-accent1);
-}
-
-.link {
-	color: black;
-	text-decoration: none;
 }
 
 .logo {

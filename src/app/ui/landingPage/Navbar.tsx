@@ -1,36 +1,30 @@
 'use client';
 
-import Link from 'next/link';
+import { Children, useId } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { useClientResize } from '@/app/hooks/useClientResize';
 import styles from './navbar.module.css';
-import classNames from 'classnames';
 
-export default function Navbar() {
+export default function Navbar({ children }: { children: React.ReactElement[] }) {
+	const navID = useId();
+
+	const { desktopWidth: dskWidth } = useClientResize(768);
+
+	const popover = dskWidth.matches ? {} : { popover: '' };
+
+	const childs = Children.map(children, (child, i) => <li key={i}>{child}</li>);
+
 	return (
-		<nav className=''>
-			<ul className={styles.menuInner}>
-				<li className={styles.menuItem}>
-					<Link href='/productList' className={styles.menuLink}>
-						Products
-					</Link>
-				</li>
-				<li className={styles.menuItem}>
-					<Link href='/sobre-nosotros' className={styles.menuLink}>
-						About Us
-					</Link>
-				</li>
-				<li className={styles.menuItem}>
-					<Link href='/contacto' className={styles.menuLink}>
-						Contact
-					</Link>
-				</li>
-				<li className={styles.menuItem}>
-					<Link href='/Cart' className={styles.menuLink}>
-						<FontAwesomeIcon icon={faShoppingCart} />
-					</Link>
-				</li>
-			</ul>
-		</nav>
+		<>
+			{!dskWidth.matches && (
+				<button className={styles.menu} popoverTarget={navID}>
+					<FontAwesomeIcon icon={faBars} />
+				</button>
+			)}
+			<nav {...popover} id={navID} className={styles.nav}>
+				<ul className={styles.navList}>{childs}</ul>
+			</nav>
+		</>
 	);
 }
