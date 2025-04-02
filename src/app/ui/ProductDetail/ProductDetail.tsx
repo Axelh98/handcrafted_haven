@@ -42,7 +42,8 @@ export default function ProductDetailPage() {
           </div>
 
           <div className="purchase-info">
-            <input type="number" min="1" defaultValue="1" />
+            <label htmlFor="quantity" className="sr-only">Quantity</label>
+            <input id="quantity" type="number" min="1" defaultValue="1" placeholder="Enter quantity" />
             <button type="button" className="btn">
               Add to Cart <i className="fas fa-shopping-cart"></i>
             </button>

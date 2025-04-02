@@ -30,11 +30,11 @@ export default function Cart() {
                     <p className="item-price">$259.00</p>
 
                     <div className="quantity-controls">
-                      <button className="quantity-button">
+                      <button className="quantity-button" title="Decrease quantity">
                         <FontAwesomeIcon icon={faMinus} />
                       </button>
                       <div className="quantity-display">1</div>
-                      <button className="quantity-button">
+                      <button className="quantity-button" title="Increase quantity">
                         <FontAwesomeIcon icon={faPlus} />
                       </button>
                     </div>
@@ -42,7 +42,7 @@ export default function Cart() {
                 </div>
 
                 <div className="item-remove">
-                  <button type="button" className="remove-button">
+                  <button type="button" className="remove-button" title="Remove item">
                     <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
                 </div>
