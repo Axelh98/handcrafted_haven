@@ -34,9 +34,59 @@ export async function fetchCategories() {
       FROM categories
     `;
 
+	console.log('Products:', data); 
+
 		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch categories.');
+	}
+}
+
+export async function fetchProducts() {
+	try {
+		const data = await sql`
+      SELECT *
+      FROM products
+    `;
+
+
+	console.log('Product:', data); 
+
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch products.');
+	}
+}
+
+export async function fetchProduct(id: string) {
+	try {
+	  const data = await sql`
+		SELECT *
+		FROM products
+		WHERE id = ${id}
+	  `;
+  
+	  return data[0]; 
+	} catch (error) {
+	  console.error('Database Error:', error);
+	  throw new Error('Failed to fetch product.');
+	}
+  }
+  
+
+export async function fetchProductByCategory(categoryId: string) {
+	try {
+		const data = await sql`
+      SELECT *
+      FROM products
+      WHERE category_id = ${categoryId}
+    `;
+
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch products by category.');
 	}
 }

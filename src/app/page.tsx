@@ -1,3 +1,4 @@
+
 // GLOBAL STYLES
 import '@/app/globals.css';
 

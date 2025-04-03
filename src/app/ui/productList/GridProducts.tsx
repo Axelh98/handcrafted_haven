@@ -1,8 +1,8 @@
+'use client';
+
 import "./ProductListPage.css";
 // import global styles
 import "../../globals.css";
-
-
 const products = [
     {
       id: 1,
@@ -62,6 +62,7 @@ const products = [
   ];
 
   export default function GridProducts() {
+
     return (
       <div className="products">
       {products.map((product) => (
