@@ -1,6 +1,9 @@
 // GLOBAL STYLES
 import '@/app/globals.css';
 
+// IMPORT COMPONENTS
+import Hero from '@/app/ui/landingPage/Hero';
+import Carousel from '@/app/ui/landingPage/Carousel';
 
 
 export default async function Page() {

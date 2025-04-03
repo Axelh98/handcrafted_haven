@@ -1,4 +1,6 @@
-
+// import components
+import FilterList from '@/app/ui/productList/FilterList';
+import GridProducts from '@/app/ui/productList/GridProducts';
 
 export default async function Page() {
 	return (
