@@ -194,3 +194,60 @@ export async function fetchUser(id: string) {
 	}
 }
 
+
+
+
+/* ---------------------  *******     FUNCTIONS ABOUT PROFILES *******   --------------------- */
+/* ---------------------  *******     FUNCTIONS ABOUT PROFILES *******   --------------------- */
+/* ---------------------  *******     FUNCTIONS ABOUT PROFILES *******   --------------------- */
+
+/* >>>>>>>>>>> GET FUNCTIONS ABOUT PROFILES <<<<<<<<<<<<<<<<<<<<<<<<<<< */
+/* >>>>>>>>>>> GET FUNCTIONS ABOUT PROFILES <<<<<<<<<<<<<<<<<<<<<<<<<<< */
+/* >>>>>>>>>>> GET FUNCTIONS ABOUT PROFILES <<<<<<<<<<<<<<<<<<<<<<<<<<< */
+
+// FUNCTION FOR FETCHING ALL PROFILES
+export async function fetchProfiles() {
+  try {
+    const data = await sql`
+      SELECT *
+      FROM profiles
+    `;
+  
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch profiles.');
+  }
+}
+
+// FUNCTION FOR FETCHING A SINGLE PROFILE
+export async function fetchProfile(id: string) {
+  try {
+    const data = await sql`
+      SELECT *
+      FROM profiles
+      WHERE id = ${id}
+    `;
+  
+    return data[0];
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch profile.');
+  }
+}
+
+// FUNCTION FOR FETCHING A SINGLE PROFILE BY USER
+export async function fetchProfileByUser(userId: string) {
+  try {
+    const data = await sql`
+      SELECT *
+      FROM profiles
+      WHERE user_id = ${userId}
+    `;
+  
+    return data;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch profile by user.');
+  }
+}	
