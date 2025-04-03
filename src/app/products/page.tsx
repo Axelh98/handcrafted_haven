@@ -1,16 +1,14 @@
+import FilterList from '@/app/ui/productList/FilterList';
+import GridProducts from '@/app/ui/productList/GridProducts';
 
-// Importamos los componentes de filtros y productos
-import FilterList from "@/app/ui/productList/FilterList";
-import GridProducts from "@/app/ui/productList/GridProducts";
+export default async function Page() {
+	return (
+		<div className='product-list-page'>
+			{/* Columna de filtros */}
+			<FilterList />
 
-export default function ProductListPage() {
-  return (
-    <div className="product-list-page">
-      {/* Columna de filtros */}
-      <FilterList />
-
-      {/* Columna de productos */}
-      <GridProducts />
-    </div>
-  );
+			{/* Columna de productos */}
+			<GridProducts />
+		</div>
+	);
 }

@@ -1,6 +1,4 @@
 import {
-	Geist,
-	Geist_Mono,
 	Libre_Baskerville,
 	Inter,
 	Playfair_Display,
@@ -8,18 +6,6 @@ import {
 	Poppins,
 	Amatic_SC
 } from 'next/font/google';
-
-const geistSans = Geist({
-	variable: '--font-geist-sans',
-	subsets: ['latin']
-});
-
-const geistMono = Geist_Mono({
-	variable: '--font-geist-mono',
-	subsets: ['latin']
-});
-
-export { geistSans, geistMono };
 
 export const fontHeading = Libre_Baskerville({
 	subsets: ['latin'],
