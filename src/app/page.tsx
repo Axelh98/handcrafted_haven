@@ -1,17 +1,12 @@
-// GLOBAL STYLES
-import '@/app/globals.css';
+import Hero from '@/app/ui/landingPage/Hero';
+import Carousel from './ui/landingPage/Carousel';
 
-// COMPONENTS
-import Header from '@/app/ui/landingPage/Header';
-import HeroSection from '@/app/ui/landingPage/HeroSection';
-import SectionCard from '@/app/ui/landingPage/SectionCard';
-
-export default function Home() {
+export default async function Page() {
 	return (
-		<>
-			<Header />
-			<HeroSection />
-			<SectionCard />
-		</>
+		<main>
+			<Hero />
+			<br />
+			<Carousel />
+		</main>
 	);
 }
