@@ -1,10 +1,29 @@
-// Import Styles
+'use client';
+
 import './Cart.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashAlt, faMinus, faPlus, faArrowRight } from '@fortawesome/free-solid-svg-icons';
-
+import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import { useSession } from 'next-auth/react';
 
 export default function Cart() {
+  const { data: session, status } = useSession();
+
+  if (status === 'loading') {
+    return <p>Loading...</p>;
+  }
+
+  if (!session) {
+    return (
+      <div className='error-container'>
+        <div className="card-error">
+          <FontAwesomeIcon icon={faExclamationTriangle} className="error-icon" />
+          <p className='error-text'>You must be logged in to view your cart.</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <section className="cart-section">
       <div className="container">

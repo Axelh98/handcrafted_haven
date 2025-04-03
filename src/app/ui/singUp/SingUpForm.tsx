@@ -3,7 +3,7 @@
 import { signup } from '@/app/actions/auth';
 import { useFormState } from 'react-dom';
 
-import './login.css';
+import './SignUp.css';
 
 export default function SignupForm() {
   const [state, action, pending] = useFormState(signup, undefined);
@@ -12,7 +12,7 @@ export default function SignupForm() {
     <div className='signup__container'>
       <form className='signup' action={action}>
         <h1>Create an account</h1>
-        <h2>Already have an account? <span>Sign in</span></h2>
+        <h2>Already have an account? <span><a href="pages/auth">Sign in</a></span></h2>
 
         <div className='signup__field'>
           <label htmlFor="name">Name</label>

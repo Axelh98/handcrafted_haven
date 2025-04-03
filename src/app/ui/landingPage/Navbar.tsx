@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,36 +8,51 @@ import styles from './LandingPage.module.scss';
 import classNames from 'classnames';
 
 export default function Navbar() {
+
+
   return (
     <nav className={classNames(styles.navbar, styles.container)}>
-      <Link href="/" className={styles.logo}>
+      <Link href="/pages" className={styles.logo}>
         Handcrafted Haven
       </Link>
       <Search placeholder="Buscar productos" />
       <div className={styles.menu}>
-        <ul className={styles.menuInner}>
+        <ul className={styles.menuInner}>(
+            <>
+              <li className={styles.menuItem}>
+                <Link href="/pages/signUp" className={styles.menuLink}>
+                  Sign Up
+                </Link>
+              </li>
+              <li className={styles.menuItem}>
+                <Link href="/pages/auth/" className={styles.menuLink}>
+                  Sign In
+                </Link>
+              </li>
+            </>
+          )
           <li className={styles.menuItem}>
-            <Link href="/" className={styles.menuLink}>
+            <Link href="/pages" className={styles.menuLink}>
               Home
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href="/productList" className={styles.menuLink}>
+            <Link href="pages/productList" className={styles.menuLink}>
               Products
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href="/sobre-nosotros" className={styles.menuLink}>
+            <Link href="pages/sobre-nosotros" className={styles.menuLink}>
               About Us
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href="/contacto" className={styles.menuLink}>
+            <Link href="pages/contacto" className={styles.menuLink}>
               Contact
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <Link href="/Cart" className={styles.menuLink}>
+            <Link href="pages/Cart" className={styles.menuLink}>
               <FontAwesomeIcon icon={faShoppingCart} />
             </Link>
           </li>

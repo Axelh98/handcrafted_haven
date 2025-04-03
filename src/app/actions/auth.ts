@@ -1,6 +1,48 @@
-import { SignupFormSchema, FormState } from '@/app/lib/definitions';
+import { SignupFormSchema, FormState, LoginFormSchema, LoginFormState } from '@/app/lib/definitions';
 import bcrypt from 'bcryptjs';
 import { supabase } from '@/app/lib/supabaseClient';
+import { redirect } from 'next/dist/server/api-utils';
+
+import NextAuth from 'next-auth';
+import Credentials from "next-auth/providers/credentials";
+
+
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [
+    Credentials({
+      // You can specify which fields should be submitted, by adding keys to the `credentials` object.
+      // e.g. domain, username, password, 2FA token, etc.
+      credentials: {
+        email: {},
+        password: {},
+      },
+      authorize: async (credentials) => {
+        let user = null
+ 
+        // logic to salt and hash password
+        const pwHash = saltAndHashPassword(credentials.password)
+ 
+        // logic to verify if the user exists
+        user = await getUserFromDb(credentials.email, pwHash)
+ 
+        if (!user) {
+          // No user found, so this is their first attempt to login
+          // Optionally, this is also the place you could do a user registration
+          throw new Error("Invalid credentials.")
+        }
+ 
+        // return user object with their profile data
+        return user
+      },
+    }),
+  ],
+})
+
+
+
+
+
+
 
 export async function signup(state: FormState, formData: FormData) {
   // Validate form fields
@@ -40,8 +82,11 @@ export async function signup(state: FormState, formData: FormData) {
 
   const user = data[0];
 
-  return {
-    message: 'Account created successfully!',
-    user,
-  };
+  // Create a session for the user
+  await createSession(user.id);
+
+  // REDIRECT TO HOME PAGE
+  redirect('/pages');
+
 }
+

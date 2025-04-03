@@ -79,3 +79,24 @@ export const SignupFormSchema = z.object({
         message?: string
       }
     | undefined
+
+
+// Login form zod schema
+
+export const LoginFormSchema = z.object({
+	email: z.string().email({ message: 'Please enter a valid email.' }).trim(),
+	password: z
+	  .string()
+	  .min(8, { message: 'Password must be at least 8 characters long.' })
+	  .trim(),
+  });
+  
+  export type LoginFormState =
+	| {
+		errors?: {
+		  email?: string[];
+		  password?: string[];
+		};
+		message?: string;
+	  }
+	| undefined;
