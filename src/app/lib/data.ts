@@ -137,20 +137,29 @@ export async function fetchProductByUser(userId: string) {
 /* >>>>>> POST FUNCTIONS ABOUT PRODUCTS <<<<<<<< */
 
 // FUNCTION FOR CREATING A PRODUCT
-export async function createProduct(product: Product) {
+// FUNCTION FOR CREATING A PRODUCT
+export async function createProduct(productData: { [key: string]: any }) {
+	const product = {
+		name: productData.name,
+		description: productData.description,
+		image_url: productData.image_url,
+		price: productData.price,
+		profile_id: productData.profile_id,
+		category_id: productData.category_id
+	};
+
 	try {
 		const data = await sql`
-      INSERT INTO products (name, description, image_url, price, profile_id, category_id)
-      VALUES (${product.name}, ${product.description}, ${product.image_url}, ${product.price}, ${product.profile_id}, ${product.category_id})
-    `;
-  
+			INSERT INTO products (name, description, image_url, price, profile_id, category_id)
+			VALUES (${product.name}, ${product.description}, ${product.image_url}, ${product.price}, ${product.profile_id}, ${product.category_id})
+		`;
+
 		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to create product.');
 	}
 }
-
 
 
 
