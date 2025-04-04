@@ -13,12 +13,13 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
 	return (
 		<>
-			<form action={formAction} onChange={handleChange} className={styles.searchForm}>
+			<form action={formAction} className={styles.searchForm}>
 				<input
 					id='search'
 					name='query'
 					className={styles.searchInput}
 					placeholder={placeholder}
+					onChange={handleChange}
 					value={query}
 				/>
 				<MagnifyingGlassIcon className={styles.searchIcon} />

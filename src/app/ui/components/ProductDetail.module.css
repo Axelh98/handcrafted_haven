@@ -1,0 +1,25 @@
+.cardWrapper {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+
+@media screen and (minwidth: 992px) {
+	.card {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		grid-gap: 1.5rem;
+	}
+
+	.cardWrapper {
+		height: 100vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+}
+
+/* art-button:disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    box-shadow: none;
+  } */

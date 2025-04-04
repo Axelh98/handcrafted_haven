@@ -1,0 +1,39 @@
+.imgDisplay {
+	overflow: hidden;
+}
+
+.imgShowcase {
+	display: flex;
+	width: 100%;
+	transition: all 0.5s ease;
+}
+
+.imgShowcase img {
+	min-width: 100%;
+}
+
+.imgSelect {
+	display: flex;
+}
+
+.imgItem {
+	margin: 0.3rem;
+}
+
+.imgItem:nth-child(1),
+.imgItem:nth-child(2),
+.imgItem:nth-child(3) {
+	margin-right: 0;
+}
+
+.imgItem:hover {
+	opacity: 0.8;
+}
+
+@media screen and (min-width: 992px) {
+	.productImgs {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+}
