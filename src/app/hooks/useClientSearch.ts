@@ -1,19 +1,22 @@
-import { ChangeEvent, useActionState } from 'react';
+import { ChangeEvent, useActionState, useState, useEffect, useRef } from 'react';
 import { searchFromHome, State } from '@/app/lib/actions';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 
-export function useClientSearchFromHome() {
+export function useClientSearchFromAnywhere() {
 	const initialState: State = { message: null, errors: {} };
 	const [state, formAction] = useActionState(searchFromHome, initialState);
 
 	return { state, formAction };
 }
 
-export function useClientSearchFromAnywhere() {
+export function useClientSearchInProducts() {
 	const searchParams = useSearchParams();
 	const pathname = usePathname();
 	const { replace } = useRouter();
+
+	const [query, setQuery] = useState(searchParams.get('q')?.toString() || '');
+	const isFirstInput = useRef(true);
 
 	const handleSearch = useDebouncedCallback((term: string) => {
 		const params = new URLSearchParams(searchParams);
@@ -30,19 +33,25 @@ export function useClientSearchFromAnywhere() {
 	}, 300);
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-		handleSearch(e.target.value);
+		const newQuery = e.target.value;
+		const isProducts = pathname === '/products';
+		if (newQuery === ' ') return;
+		setQuery(newQuery);
+
+		if (isProducts) handleSearch(newQuery);
 	};
 
-	const isHome = pathname === '/';
+	useEffect(() => {
+		if (isFirstInput.current) {
+			isFirstInput.current = query === '';
+			return;
+		}
 
-	const defaultValue = searchParams.get('q')?.toString();
+		return;
+	}, [query]);
 
 	return {
-		defaultValue,
-		isHome,
-		handleChange,
-		fallback: (e: ChangeEvent<HTMLInputElement>) => {
-			e.preventDefault();
-		}
+		query,
+		handleChange
 	};
 }

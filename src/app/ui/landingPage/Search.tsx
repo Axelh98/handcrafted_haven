@@ -1,25 +1,25 @@
 'use client';
 
 import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useClientSearchFromAnywhere, useClientSearchFromHome } from '@/app/hooks/useClientSearch';
+import {
+	useClientSearchFromAnywhere,
+	useClientSearchInProducts
+} from '@/app/hooks/useClientSearch';
 import styles from './search.module.css';
 
 export default function Search({ placeholder }: { placeholder: string }) {
-	const { state, formAction } = useClientSearchFromHome();
-	const { defaultValue, isHome, handleChange, fallback } = useClientSearchFromAnywhere();
+	const { state, formAction } = useClientSearchFromAnywhere();
+	const { query, handleChange } = useClientSearchInProducts();
 
 	return (
 		<>
-			<form
-				action={formAction}
-				onChange={!isHome ? handleChange : fallback}
-				className={styles.searchForm}>
+			<form action={formAction} onChange={handleChange} className={styles.searchForm}>
 				<input
 					id='search'
 					name='query'
 					className={styles.searchInput}
 					placeholder={placeholder}
-					value={defaultValue}
+					value={query}
 				/>
 				<MagnifyingGlassIcon className={styles.searchIcon} />
 			</form>
