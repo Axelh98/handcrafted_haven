@@ -26,13 +26,7 @@ export async function signup(state: FormState, formData: FormData) {
     .from('users')
     .insert([{ name, email, password: hashedPassword }]);
 
-  if (error) {
-    return {
-      message: 'An error occurred while creating your account.',
-    };
-  }
-
-  if (!data || data.length === 0) {
+  if (error || !data || !Array.isArray(data)) {
     return {
       message: 'An error occurred while creating your account.',
     };
