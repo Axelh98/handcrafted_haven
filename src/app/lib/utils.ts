@@ -4,3 +4,7 @@ export const formatCurrency = (amount: number) => {
 		currency: 'USD'
 	});
 };
+
+export const formatRating = (rate: number) => {
+	return rate.toFixed(2);
+};

@@ -57,6 +57,19 @@ interface RawProductForCard {
 	rate_avg: number;
 }
 
+interface RawProductDetail {
+	product_id: string;
+	title: string;
+	description: string;
+	image: string;
+	price: number;
+	profile_id: string;
+	profile: string;
+	category_id: string;
+	category: string;
+	rating: number;
+}
+
 interface ProductForCard {
 	id: string;
 	name: string;
@@ -75,7 +88,8 @@ export type {
 	Review,
 	Rate,
 	RawProductForCard,
-	ProductForCard
+	ProductForCard,
+	RawProductDetail
 };
 
 // Signup form zod schema
