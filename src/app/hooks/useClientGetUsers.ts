@@ -3,28 +3,28 @@
 import { useEffect, useState } from 'react';
 
 export function useClientGetUsers() {
-  const [users, setUsers] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+	const [users, setUsers] = useState(null);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState('');
 
-  useEffect(() => {
-    async function getUsers() {
-      try {
-        const res = await fetch('/api/users', {
-          headers: { 'Content-Type': 'application/json' }
-        });
-        const data = await res.json();
-        setUsers(data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    }
+	useEffect(() => {
+		async function getUsers() {
+			try {
+				const res = await fetch('/api/users', {
+					headers: { 'Content-Type': 'application/json' }
+				});
+				const data = await res.json();
+				setUsers(data);
+			} catch (err) {
+				console.error('Error fetching users:', err.message);
+				setError(err.message);
+			} finally {
+				setLoading(false);
+			}
+		}
 
-    getUsers();
-  }, []);
+		getUsers();
+	}, []);
 
-  return { users, loading, error };
-}   
+	return { users, loading, error };
+}
