@@ -4,9 +4,6 @@ import { RawProductForCard } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-
-// FUNCTION FOR FETCHING BEST RATED PRODUCTS
-// FUNCTION FOR FETCHING BEST RATED PRODUCTS
 // FUNCTION FOR FETCHING BEST RATED PRODUCTS
 export async function fetchBestRatedProducts() {
 	try {
@@ -35,8 +32,6 @@ export async function fetchBestRatedProducts() {
 }
 
 // FUNCTION FOR FETCHING ALL CATEGORIES
-// FUNCTION FOR FETCHING ALL CATEGORIES
-// FUNCTION FOR FETCHING ALL CATEGORIES
 export async function fetchCategories() {
 	try {
 		const data = await sql`
@@ -54,14 +49,8 @@ export async function fetchCategories() {
 }
 
 /* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
-/* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
-/* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
-
 
 /* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
-/* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
-/* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
-
 
 // FUNCTION FOR FETCHING ALL PRODUCTS
 export async function fetchProducts() {
