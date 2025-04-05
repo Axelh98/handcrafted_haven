@@ -6,5 +6,5 @@ export const formatCurrency = (amount: number) => {
 };
 
 export const formatRating = (rate: number) => {
-	return rate.toFixed(2);
+	return rate.toFixed(1);
 };

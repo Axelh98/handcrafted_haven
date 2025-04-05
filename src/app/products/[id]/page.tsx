@@ -1,24 +1,51 @@
-// import { fetchProduct } from '@/app/lib/data';
-import ProductDetail from '@/app/ui/components/ProductDetail';
+import { fetchProduct } from '@/app/lib/data';
+import Image from 'next/image';
+import Link from 'next/link';
+import { RawProductDetail } from '@/app/lib/definitions';
+import { formatCurrency } from '@/app/lib/utils';
+import RatingAverage from '@/app/ui/products/RatingAverage';
+import Reviews from '@/app/ui/products/Reviews';
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
 	const { id } = await params;
 
-	// const product = await fetchProduct(id);
-	console.log(id);
+	const product: RawProductDetail = await fetchProduct(id);
 
-	const product = {
-		category: 'Textiles',
-		category_id: '9c5a8265-a1e4-4f42-b832-61a74b064e49',
-		description: 'Unique handmade wall art.',
-		image: '/products/textile-wall-art.jpg',
-		price: 8000,
-		product_id: 'b98cdbdf-63fe-42fe-b06c-0a5b03a49d9b',
-		profile: "Lucía's Creations",
-		profile_id: 'b49fc1d0-0262-44e1-9499-42833862df88',
-		rating: '4.6666666666666667',
-		title: 'Textile Wall Art'
-	};
-
-	return <ProductDetail product={product} />;
+	return (
+		<main>
+			<section>
+				<figure>
+					<Image
+						src={`/images${product.image}`}
+						alt={`${product.title} image`}
+						width={100}
+						height={100}
+					/>
+					<figcaption>
+						<RatingAverage avg={product.rating} />
+					</figcaption>
+				</figure>
+				<article>
+					<Link href={`/products?category=${product.category_id}`}>
+						<h5>{product.category}</h5>
+					</Link>
+					<h2>{product.title}</h2>
+					<Link href={`/profiles/${product.profile_id}`}>
+						<h4>{product.profile}</h4>
+					</Link>
+					<p>
+						<b>Description:</b> {product.description}
+					</p>
+					<p>
+						<b>{formatCurrency(product.price)}</b>
+					</p>
+					<form>
+						<button>Add to cart</button>
+						<button>Add to wishlist</button>
+					</form>
+				</article>
+			</section>
+			<Reviews id={id} />
+		</main>
+	);
 }

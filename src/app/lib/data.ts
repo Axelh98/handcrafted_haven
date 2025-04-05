@@ -1,6 +1,6 @@
 import postgres from 'postgres';
 import { formatCurrency } from './utils';
-import { ProductDetail, RawProductDetail, RawProductForCard } from './definitions';
+import { RawProductDetail, RawProductForCard, ReviewForCard } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -73,7 +73,7 @@ export async function fetchProducts() {
 export async function fetchProduct(id: string) {
 	try {
 		const [product] = await sql<RawProductDetail[]>`
-		SELECT p.id product_id, p.name title, p.description description, p.image_url image, p.price price, p.profile_id profile_id, s.name profile, p.category_id category_id, c.name category, AVG(rate) rating
+		SELECT p.name title, p.description description, p.image_url image, p.price price, p.profile_id profile_id, s.name profile, p.category_id category_id, c.name category, AVG(rate) rating
 		FROM products p
 		JOIN profiles s
 		ON p.profile_id = s.id
@@ -85,10 +85,40 @@ export async function fetchProduct(id: string) {
 		GROUP BY p.id, s.name, c.name
 	  `;
 
-		return product;
+		return { ...product, rating: Number(product.rating) };
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch product.');
+	}
+}
+
+// FUNCTION FOR FETCHING A SINGLE REVIEWS BY PRODUCT ID
+export async function fetchReviewsByProduct(id: string) {
+	try {
+		const data = await sql<ReviewForCard[]>`
+		SELECT id, name, content, post_date
+		FROM reviews r
+		WHERE r.product_id = ${id}
+	  `;
+
+		const reviews = data.map((review) => ({ ...review, post_date: new Date(review.post_date) }));
+
+		return reviews;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch reviews.');
+	}
+}
+
+export async function insertReview(name: string, content: string, product_id: string) {
+	try {
+		await sql`
+			INSERT INTO reviews (name, content, product_id, post_date)
+			VALUES (${name}, ${content}, ${product_id}, NOW())
+	  `;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to insert reviews.');
 	}
 }
 

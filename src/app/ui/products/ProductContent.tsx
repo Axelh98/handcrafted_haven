@@ -1,19 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faShoppingCart, faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
-import styles from '@/app/ui/components/ProductContent.module.css';
+import { RawProductDetail } from '@/app/lib/definitions';
+import styles from '@/app/ui/products/ProductContent.module.css';
 
-export default function ProductContent({ product }) {
+export default function ProductContent({ product }: { product: RawProductDetail }) {
 	return (
 		<div className={styles.productContent}>
-			<h2 className={styles.productTitle}>{product.name}</h2>
+			<h2 className={styles.productTitle}>{product.title}</h2>
 			<div className={styles.productRating}>
 				{[...Array(Math.floor(product.rating))].map((_, i) => (
 					<FontAwesomeIcon key={i} icon={faStar} />
 				))}
 				{product.rating % 1 !== 0 && <FontAwesomeIcon icon={faStarHalfAlt} />}
-				<span>
-					{product.rating} ({product.reviews})
-				</span>
+				<span>{product.rating}</span>
 			</div>
 
 			<div className={styles.productPrice}>
@@ -28,7 +27,7 @@ export default function ProductContent({ product }) {
 			</div>
 
 			<div className={styles.purchaseInfo}>
-				{/* <input type='number' min='1' defaultValue='1' /> */}
+				<input type='number' min='1' defaultValue='1' />
 				<button type='button' className={styles.btn}>
 					Add to Cart <FontAwesomeIcon icon={faShoppingCart} />
 				</button>
