@@ -1,12 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
+// src/app/api/categories/route.ts
+import { NextResponse } from 'next/server';
+import { Category } from '@/app/lib/definitions';
 import { fetchCategories } from '@/app/lib/data';
 
-export async function GET(req: NextRequest) {
-	if (req.headers.get('content-type') !== 'application/json') {
-		return NextResponse.json({ message: 'Content-Type must be application/json' }, { status: 400 });
-	}
-
-	const data = await fetchCategories();
-
-	return NextResponse.json(data);
+export async function GET() {
+  try {
+    const categories: Category[] = await fetchCategories();
+    return NextResponse.json(categories, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch categories.' }, { status: 500 });
+  }
 }

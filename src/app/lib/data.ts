@@ -1,6 +1,7 @@
 import postgres from 'postgres';
 import { formatCurrency } from './utils';
 import { RawProductDetail, RawProductForCard, ReviewForCard } from './definitions';
+import { Category, Product } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -32,42 +33,35 @@ export async function fetchBestRatedProducts() {
 }
 
 // FUNCTION FOR FETCHING ALL CATEGORIES
-export async function fetchCategories() {
-	try {
-		const data = await sql`
-      SELECT *
+// lib/data.ts
+
+export async function fetchCategories(): Promise<Category[]> {
+  try {
+    const data = await sql`
+      SELECT id, name
       FROM categories
     `;
 
-		console.log('Products:', data);
+    const categories: Category[] = data.map((row: any) => ({
+      id: row.id,
+      name: row.name,
+    }));
 
-		return data;
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch categories.');
-	}
+    console.log('Categories:', categories);
+
+    return categories;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch categories.');
+  }
 }
+
 
 /* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
 
 /* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
 
-// FUNCTION FOR FETCHING ALL PRODUCTS
-export async function fetchProducts() {
-	try {
-		const data = await sql`
-      SELECT *
-      FROM products
-    `;
 
-		console.log('Product:', data);
-
-		return data;
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch products.');
-	}
-}
 
 // FUNCTION FOR FETCHING A SINGLE PRODUCT
 export async function fetchProduct(id: string) {
@@ -154,34 +148,102 @@ export async function fetchProductByUser(userId: string) {
 	}
 }
 
-/* >>>>>> POST FUNCTIONS ABOUT PRODUCTS <<<<<<<< */
-/* >>>>>> POST FUNCTIONS ABOUT PRODUCTS <<<<<<<< */
-/* >>>>>> POST FUNCTIONS ABOUT PRODUCTS <<<<<<<< */
+/* >>>>>> CRUD PRODUCTS <<<<<<<< */
+/* >>>>>> CRUD PRODUCTS <<<<<<<< */
+/* >>>>>> CRUD PRODUCTS <<<<<<<< */
 
-// FUNCTION FOR CREATING A PRODUCT
-// FUNCTION FOR CREATING A PRODUCT
-export async function createProduct(productData: { [key: string]: any }) {
-	const product = {
-		name: productData.name,
-		description: productData.description,
-		image_url: productData.image_url,
-		price: productData.price,
-		profile_id: productData.profile_id,
-		category_id: productData.category_id
-	};
+// lib/data.ts
 
+export async function fetchProducts(): Promise<Product[]> {
+  try {
+    const data = await sql`
+      SELECT id, name, description, image_url, price, profile_id, category_id
+      FROM products
+    `;
+    return data.map((row: any) => ({
+      id: row.id,
+      name: row.name,
+      description: row.description,
+      image_url: row.image_url,
+      price: row.price,
+      profile_id: row.profile_id,
+      category_id: row.category_id,
+    }));
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to fetch products.');
+  }
+}
+
+
+export async function createProduct(product: Product): Promise<void> {
+	try {
+	  if (!product.name || !product.description || !product.image_url || !product.price || !product.profile_id || !product.category_id) {
+		throw new Error('All product fields must be defined.');
+	  }
+	  await sql`
+		INSERT INTO products (name, description, image_url, price, profile_id, category_id)
+		VALUES (${product.name}, ${product.description}, ${product.image_url}, ${product.price}, ${product.profile_id}, ${product.category_id})
+	  `;
+	} catch (error) {
+	  console.error('Database Error:', error);
+	  throw new Error('Failed to create product.');
+	}
+  }
+  
+  export async function updateProduct(product: Product): Promise<void> {
+	try {
+	  if (!product.id || !product.name || !product.description || !product.image_url || !product.price || !product.profile_id || !product.category_id) {
+		throw new Error('All product fields must be defined.');
+	  }
+	  await sql`
+		UPDATE products
+		SET name = ${product.name},
+			description = ${product.description},
+			image_url = ${product.image_url},
+			price = ${product.price},
+			profile_id = ${product.profile_id},
+			category_id = ${product.category_id}
+		WHERE id = ${product.id}
+	  `;
+	} catch (error) {
+	  console.error('Database Error:', error);
+	  throw new Error('Failed to update product.');
+	}
+  }
+  
+  // FUNTION FOR FETCHING A SINGLE PRODUCT BY ID
+export async function fetchProductById(id: string): Promise<Product | null> {
 	try {
 		const data = await sql`
-			INSERT INTO products (name, description, image_url, price, profile_id, category_id)
-			VALUES (${product.name}, ${product.description}, ${product.image_url}, ${product.price}, ${product.profile_id}, ${product.category_id})
-		`;
-
-		return data;
+      SELECT *
+      FROM products
+      WHERE id = ${id}
+    `;
+		if (data.length === 0) {
+			return null;
+		}
+		return data[0];
 	} catch (error) {
 		console.error('Database Error:', error);
-		throw new Error('Failed to create product.');
+		throw new Error('Failed to fetch product by id.');
 	}
 }
+
+
+export async function deleteProduct(id: string): Promise<void> {
+  try {
+    await sql`
+      DELETE FROM products
+      WHERE id = ${id}
+    `;
+  } catch (error) {
+    console.error('Database Error:', error);
+    throw new Error('Failed to delete product.');
+  }
+}
+
+
 
 /* ---------------------  *******     FUNCTIONS ABOUT USERS *******   --------------------- */
 /* ---------------------  *******     FUNCTIONS ABOUT USERS *******   --------------------- */
