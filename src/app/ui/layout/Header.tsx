@@ -1,12 +1,12 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Image from 'next/image';
-import Navbar from './Navbar';
-import CategoryList from './CategoryList';
-import Search from './Search';
-import { fontHeading } from '../fonts';
-import styles from './header.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { fontHeading } from '@/app/ui/fonts';
+import Search from '@/app/ui/layout/Search';
+import Navbar from '@/app/ui/layout/Navbar';
+import CategoryList from '@/app/ui/layout/CategoryList';
+import styles from '@/app/ui/layout/header.module.css';
 
 export default function Header() {
 	return (
@@ -22,8 +22,8 @@ export default function Header() {
 			<Search placeholder='Search products...' />
 			<Navbar>
 				<CategoryList summary='Products' />
-				<Link href='/about' className='link'>
-					About Us
+				<Link href='/sellers' className='link'>
+					Sellers
 				</Link>
 				<Link href='/contact' className='link'>
 					Contact
