@@ -1,53 +1,48 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-
-interface Review {
-  // Define the structure of a review object
-  id: string;
-  content: string;
-  // Add other relevant fields
-}
+import { ReviewForCard } from '../lib/definitions';
 
 export function useClientReviews(id: string) {
-  const [reviews, setReviews] = useState<Review[]>([]);
-  const [iteration, setIteration] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+	const [reviews, setReviews] = useState<ReviewForCard[]>([]);
+	const [iteration, setIteration] = useState<number>(1);
 
-  useEffect(() => {
-    async function getTotalPages() {
-      const res = await fetch(`/api/products/${id}/reviews/pages`, {
-        headers: { 'Content-Type': 'application/json' }
-      });
-      const data = await res.json();
+	const [totalPages, setTotalPages] = useState<number>(1);
 
-      setTotalPages(data);
-    }
+	useEffect(() => {
+		async function getTotalPages() {
+			const res = await fetch(`/api/products/${id}/reviews/pages`, {
+				headers: { 'Content-Type': 'application/json' }
+			});
+			const data = await res.json();
 
-    getTotalPages();
-  }, [id]);
+			setTotalPages(data);
+		}
 
-  useEffect(() => {
-    async function getCategories() {
-      if (iteration <= totalPages) {
-        const res = await fetch(`/api/products/${id}/reviews/${iteration}`, {
-          headers: { 'Content-Type': 'application/json' }
-        });
-        const data = await res.json();
+		getTotalPages();
+	}, []);
 
-        setReviews((prevState) => {
-          return [...prevState, ...data];
-        });
-      }
-    }
+	useEffect(() => {
+		async function getReviews() {
+			if (iteration <= totalPages) {
+				const res = await fetch(`/api/products/${id}/reviews/${iteration}`, {
+					headers: { 'Content-Type': 'application/json' }
+				});
+				const data = await res.json();
 
-    getCategories();
-  }, [iteration, totalPages, id]);
+				setReviews((prevState) => {
+					return [...prevState, ...data];
+				});
+			}
+		}
 
-  const reqMoreReviews = () => {
-    setIteration((prevState) => prevState + 1);
-  };
+		getReviews();
+	}, [iteration]);
 
-  return { reviews, reqMoreReviews, isLast: iteration === totalPages };
+	const reqMoreReviews = () => {
+		setIteration((prevState) => prevState + 1);
+	};
+
+	return { reviews, reqMoreReviews, isLast: iteration === totalPages };
 }
 

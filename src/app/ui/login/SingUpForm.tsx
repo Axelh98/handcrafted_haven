@@ -2,7 +2,7 @@
 
 import { signup } from '@/app/actions/auth';
 import { useFormState } from 'react-dom';
-
+import Link from 'next/link';
 import './login.css';
 
 export default function SignupForm() {
@@ -12,7 +12,9 @@ export default function SignupForm() {
     <div className='signup__container'>
       <form className='signup' action={action}>
         <h1>Create an account</h1>
-        <h2>Already have an account? <span>Sign in</span></h2>
+        <p>
+          Already have an account? <Link href="/login">Log in</Link>
+        </p>
 
         <div className='signup__field'>
           <label htmlFor="name">Name</label>

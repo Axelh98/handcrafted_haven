@@ -1,40 +1,18 @@
 import postgres from 'postgres';
 import { formatCurrency } from './utils';
-import { RawProductDetail, RawProductForCard, ReviewForCard } from './definitions';
+import {
+	RawProductDetail,
+	RawProductForCard,
+	ReviewForCard,
+	SellerProfileDetail
+} from './definitions';
 import { Category, Product } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-// FUNCTION FOR FETCHING BEST RATED PRODUCTS
-export async function fetchBestRatedProducts() {
-	try {
-		const data = await sql<RawProductForCard[]>`
-			SELECT p.id id, p.name name, p.image_url image_url, price, profile_id, s.name profile_name, AVG(rate) rate_avg
-      FROM products p
-			JOIN profiles s
-			ON p.profile_id = s.id
-      JOIN rates r
-      ON p.id = r.product_id
-      GROUP BY p.id, profile_name
-      ORDER BY rate_avg DESC
-      LIMIT 6
-    `;
+/* ***** SQL FOR LAYOUT COMPONENTS IN FIRST INSTANCE ***** */
 
-		const products = data.map((product) => ({
-			...product,
-			price: formatCurrency(product.price)
-		}));
-
-		return products;
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch best rated products.');
-	}
-}
-
-// FUNCTION FOR FETCHING ALL CATEGORIES
-// lib/data.ts
-
+// FETCH CATEGORIES LIST
 export async function fetchCategories() {
 	try {
 		const data = await sql<Category[]>`
@@ -54,11 +32,39 @@ export async function fetchCategories() {
 	}
 }
 
-/* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
+/* ***** SQL FOR LANDING COMPONENTS IN FIRST INSTANCE ***** */
 
-/* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
+// FETCH 6 BEST RATED PRODUCTS
+export async function fetchBestRatedProducts(qty: number, profileId?: string) {
+	try {
+		const data = await sql<RawProductForCard[]>`
+			SELECT p.id id, p.name name, p.image_url image_url, price, profile_id, s.name profile_name, AVG(rate) rate_avg
+      FROM products p
+			JOIN profiles s
+			ON p.profile_id = s.id
+      JOIN rates r
+      ON p.id = r.product_id
+			${profileId ? sql`WHERE profile_id = ${profileId}` : sql``}
+      GROUP BY p.id, profile_name
+      ORDER BY rate_avg DESC
+      ${qty && sql`LIMIT ${qty}`}
+    `;
 
-// FUNCTION FOR FETCHING A SINGLE PRODUCT
+		const products = data.map((product) => ({
+			...product,
+			price: formatCurrency(product.price)
+		}));
+
+		return products;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch best rated products.');
+	}
+}
+
+/* ***** SQL FOR PRODUCT DETAIL COMPONENTS ***** */
+
+// FETCH PRODUCT DETAIL BY ID
 export async function fetchProductDetail(id: string) {
 	try {
 		const [product] = await sql<RawProductDetail[]>`
@@ -83,7 +89,7 @@ export async function fetchProductDetail(id: string) {
 	}
 }
 
-// FUNCTION FOR FETCHING A SINGLE REVIEWS BY PRODUCT ID
+// FETCH PRODUCT REVIEWS FOR PRODUCT ID
 export async function fetchReviewsByProduct(id: string) {
 	try {
 		const data = await sql<ReviewForCard[]>`
@@ -102,7 +108,9 @@ export async function fetchReviewsByProduct(id: string) {
 	}
 }
 
+// FETCH PRODUCT REVIEWS FOR PRODUCT ID IMPLETENTING PAGINATION
 const ITEMS_PER_REQ = 3;
+
 export async function fetchReviewsByProductPaginated(id: string, iteration: number) {
 	const offset = (iteration - 1) * ITEMS_PER_REQ;
 
@@ -124,6 +132,7 @@ export async function fetchReviewsByProductPaginated(id: string, iteration: numb
 	}
 }
 
+// FETCH PRODUCT REVIEWS TOTAL PAGES FOR PAGINATION
 export async function fetchReviewsByProductPages(id: string) {
 	try {
 		const [data] = await sql`
@@ -142,6 +151,7 @@ export async function fetchReviewsByProductPages(id: string) {
 	}
 }
 
+// POST PRODUCT REVIEW
 export async function insertReview(name: string, content: string, product_id: string) {
 	try {
 		await sql`
@@ -151,6 +161,24 @@ export async function insertReview(name: string, content: string, product_id: st
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to insert reviews.');
+	}
+}
+
+/* ***** SQL FOR SELLER PROFILE COMPONENTS ***** */
+
+// FETCH SELLER PROFILE DETAIL
+export async function fetchSellerProfile(id: string) {
+	try {
+		const [data] = await sql<SellerProfileDetail[]>`
+      SELECT name, about, phone, email, image_url, user_id
+      FROM profiles
+      WHERE id = ${id}
+    `;
+
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch seller profile.');
 	}
 }
 
@@ -354,22 +382,6 @@ export async function fetchProfiles() {
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch profiles.');
-	}
-}
-
-// FUNCTION FOR FETCHING A SINGLE PROFILE
-export async function fetchProfile(id: string) {
-	try {
-		const data = await sql`
-      SELECT *
-      FROM profiles
-      WHERE id = ${id}
-    `;
-
-		return data[0];
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch profile.');
 	}
 }
 

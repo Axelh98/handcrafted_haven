@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Category } from '../lib/definitions';
 
 export function useClientCategories() {
-	const [categories, setCategories] = useState([]);
+	const [categories, setCategories] = useState<Category[]>([]);
 
 	useEffect(() => {
 		async function getCategories() {

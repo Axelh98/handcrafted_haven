@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 
 export function useClientResize(width: number) {
-	const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+	const [windowWidth, setWindowWidth] = useState(window.innerWidth ?? width);
 
 	useEffect(() => {
 		const handleResize = () => {

@@ -1,7 +1,8 @@
 'use client';
-import { ProductForCard } from '@/app/lib/definitions';
+
 import Image from 'next/image';
 import Link from 'next/link';
+import { ProductForCard } from '@/app/lib/definitions';
 
 export default function ProductCard({ product }: { product: ProductForCard }) {
 	return (
@@ -17,7 +18,7 @@ export default function ProductCard({ product }: { product: ProductForCard }) {
 			<div className='carousel-details'>
 				<p className='carousel-title'>{product.name}</p>
 				<p className='carousel-price'>{product.price}</p>
-				<Link href={`/profiles/${product.profile_id}`} className='carousel-description'>
+				<Link href={`/sellers/${product.profile_id}`} className='carousel-description'>
 					{product.profile_name}
 				</Link>
 				<Link href={`/products/${product.id}`} className='carousel-button'>
