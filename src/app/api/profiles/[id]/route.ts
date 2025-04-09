@@ -1,5 +1,5 @@
 // IMPORT DATA QUERIES FETCHING A SINGLE PROFILE
-import { fetchProfile } from '@/app/lib/data';
+import { fetchSellerProfile } from '@/app/lib/data';
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -20,7 +20,7 @@ export async function GET(req: NextRequest) {
   }
 
   // FETCH A SINGLE PROFILE
-  const data = await fetchProfile(id);
+  const data = await fetchSellerProfile(id);
 
   return NextResponse.json(data);
 }

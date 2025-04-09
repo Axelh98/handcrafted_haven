@@ -173,11 +173,11 @@ async function seedRates() {
 export async function GET() {
 	try {
 
-		const result = await sql.begin((sql) => [seedUsers(), seedCategories()]);
-		const result2 = await sql.begin((sql) => [seedProfiles()]);
+//		const result = await sql.begin((sql) => [seedUsers(), seedCategories()]);
+//		const result2 = await sql.begin((sql) => [seedProfiles()]);
 
 
-		const result3 = await sql.begin((sql) => [seedProducts()]);
+//		const result3 = await sql.begin((sql) => [seedProducts()]);
 		const result4 = await sql.begin((sql) => [seedReviews()]);
 		const result5 = await sql.begin((sql) => [seedRates()]);
 
