@@ -3,35 +3,37 @@
 import { useEffect, useId, useRef } from 'react';
 
 export function useClientDetails() {
-	const detailsRef = useRef(null);
-	const detailsID = useId();
+    const detailsRef = useRef<HTMLDetailsElement | null>(null);
+    const detailsID = useId();
 
-	useEffect(() => {
-		const closeDetails = (event: React.MouseEvent) => {
-			const { target } = event;
-			const details = detailsRef.current;
+    useEffect(() => {
+        const closeDetails = (event: MouseEvent) => {
+            const target = event.target as HTMLElement | null;
+            const details = detailsRef.current;
 
-			if (details.open) {
-				const stillMatch =
-					!target.matches(`#${detailsID}`) &&
-					!target.matches(`#${detailsID} summary`) &&
-					!target.matches(`#${detailsID} li`) &&
-					!target.matches(`#${detailsID} li a`);
+            if (details && details.open) {
+                const stillMatch =
+                    target &&
+                    !target.matches(`#${detailsID}`) &&
+                    !target.matches(`#${detailsID} summary`) &&
+                    !target.matches(`#${detailsID} li`) &&
+                    !target.matches(`#${detailsID} li a`);
 
-				if (stillMatch) {
-					details.removeAttribute('open');
-				}
-			}
-		};
+                if (stillMatch) {
+                    details.removeAttribute('open');
+                }
+            }
+        };
 
-		document.addEventListener('click', closeDetails);
-		document.addEventListener('mouseover', closeDetails);
+        document.addEventListener('click', closeDetails);
+        document.addEventListener('mouseover', closeDetails);
 
-		return () => {
-			document.removeEventListener('click', closeDetails);
-			document.removeEventListener('mouseover', closeDetails);
-		};
-	}, []);
+        return () => {
+            document.removeEventListener('click', closeDetails);
+            document.removeEventListener('mouseover', closeDetails);
+        };
+    }, [detailsID]);
 
-	return { detailsID, detailsRef };
+    return { detailsID, detailsRef };
 }
+
