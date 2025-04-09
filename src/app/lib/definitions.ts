@@ -36,7 +36,7 @@ interface Review {
 	id: string;
 	name: string;
 	content: string;
-	post_date: string;
+	post_date: Date;
 	product_id: string;
 }
 
@@ -57,6 +57,21 @@ interface RawProductForCard {
 	rate_avg: number;
 }
 
+interface RawProductDetail {
+	title: string;
+	description: string;
+	image: string;
+	price: number;
+	profile_id: string;
+	profile: string;
+	category_id: string;
+	category: string;
+	rating: number;
+	count: number;
+}
+
+type ReviewForCard = Omit<Review, 'product_id'>;
+
 interface ProductForCard {
 	id: string;
 	name: string;
@@ -75,7 +90,9 @@ export type {
 	Review,
 	Rate,
 	RawProductForCard,
-	ProductForCard
+	ProductForCard,
+	RawProductDetail,
+	ReviewForCard
 };
 
 // Signup form zod schema

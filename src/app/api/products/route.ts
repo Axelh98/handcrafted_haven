@@ -1,43 +1,24 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
+import { Product } from '@/app/lib/definitions';
+import { createProduct, fetchProducts } from '@/app/lib/data';
 
-import { fetchProducts, createProduct } from '@/app/lib/data';
-
-
-
-// FUNCTION FOR FETCHING ALL PRODUCTS
-// FUNCTION FOR FETCHING ALL PRODUCTS
-export async function GET(req: NextRequest) {
-  if (req.headers.get('content-type') !== 'application/json') {
-    return NextResponse.json({ message: 'Content-Type must be application/json' }, { status: 400 });
+// Función para obtener todos los productos
+export async function GET() {
+  try {
+    const products: Product[] = await fetchProducts();
+    return NextResponse.json(products, { status: 200 });
+  } catch (error) {
+    return NextResponse.json({ error: 'Failed to fetch products.' }, { status: 500 });
   }
-
-  const data = await fetchProducts();
-
-  return NextResponse.json(data);
 }
 
-export const config = {
-  api: {
-    bodyParser: true
-  }
-};
-
-export async function POST(req: NextRequest) {
-  if (req.headers.get('content-type') !== 'application/json') {
-    return NextResponse.json({ message: 'Content-Type must be application/json' }, { status: 400 });
-  }
-
-  const productData = await req.json();
-
-  // Asignar un valor por defecto a image_url si no se proporciona
-  productData.image_url = productData.image_url || '';
-
+export async function POST(req: Request) {
   try {
-    const newProduct = await createProduct(productData);
+    const newProduct: Product = await req.json();
+    await createProduct(newProduct); // Insertar el producto en la base de datos
     return NextResponse.json(newProduct, { status: 201 });
   } catch (error) {
-    console.error('Database Error:', error);
-    return NextResponse.json({ message: 'Failed to create product.', error: error.message }, { status: 500 });
+    return NextResponse.json({ error: 'Failed to create product.' }, { status: 500 });
   }
 }
 
