@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 export function useClientProductsByCategory(categoryId: string) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     async function getProductsByCategory() {
@@ -15,7 +15,7 @@ export function useClientProductsByCategory(categoryId: string) {
         });
         const data = await res.json();
         setProducts(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching products by category:', error);
         setError(error);
       } finally {
