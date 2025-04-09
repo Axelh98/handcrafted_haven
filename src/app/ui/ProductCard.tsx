@@ -1,8 +1,8 @@
 'use client';
 
-import { ProductForCard } from '@/app/lib/definitions';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ProductForCard } from '@/app/lib/definitions';
 
 export default function ProductCard({ product }: { product: ProductForCard }) {
 	return (

@@ -35,7 +35,7 @@ export async function fetchCategories() {
 /* ***** SQL FOR LANDING COMPONENTS IN FIRST INSTANCE ***** */
 
 // FETCH 6 BEST RATED PRODUCTS
-export async function fetchBestRatedProducts() {
+export async function fetchBestRatedProducts(qty: number, profileId?: string) {
 	try {
 		const data = await sql<RawProductForCard[]>`
 			SELECT p.id id, p.name name, p.image_url image_url, price, profile_id, s.name profile_name, AVG(rate) rate_avg
@@ -44,9 +44,10 @@ export async function fetchBestRatedProducts() {
 			ON p.profile_id = s.id
       JOIN rates r
       ON p.id = r.product_id
+			${profileId ? sql`WHERE profile_id = ${profileId}` : sql``}
       GROUP BY p.id, profile_name
       ORDER BY rate_avg DESC
-      LIMIT 6
+      ${qty && sql`LIMIT ${qty}`}
     `;
 
 		const products = data.map((product) => ({
