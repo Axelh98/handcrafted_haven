@@ -6,7 +6,7 @@ export default async function Page() {
 		<main>
 			<Hero />
 			<br />
-			<Carousel params={{ qty: 6 }} />
+			<Carousel params={{ qty: '6' }} />
 		</main>
 	);
 }

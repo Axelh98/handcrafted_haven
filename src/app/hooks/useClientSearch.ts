@@ -23,8 +23,8 @@ export function useClientSearchInProducts() {
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const [query, setQuery] = useState(searchParams.get('q')?.toString() || '');
-  const isFirstInput = useRef(true);
+	const [query, setQuery] = useState<string>(searchParams.get('q')?.toString() || '');
+	const isFirstInput = useRef<boolean>(true);
 
   const handleSearch = useDebouncedCallback((term: string) => {
     const params = new URLSearchParams(searchParams);
