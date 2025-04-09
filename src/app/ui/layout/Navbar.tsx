@@ -11,7 +11,7 @@ export default function Navbar({ children }: { children: React.ReactElement[] })
 
 	const { desktopWidth: dskWidth } = useClientResize(768);
 
-	const popover = dskWidth.matches ? {} : { popover: '' };
+	const popover = dskWidth.matches ? undefined : '';
 
 	const childs = Children.map(children, (child, i) => <li key={i}>{child}</li>);
 
@@ -22,7 +22,7 @@ export default function Navbar({ children }: { children: React.ReactElement[] })
 					<FontAwesomeIcon icon={faBars} />
 				</button>
 			)}
-			<nav {...popover} id={navID} className={styles.nav}>
+			<nav popover={popover} id={navID} className={styles.nav}>
 				<ul className={styles.navList}>{childs}</ul>
 			</nav>
 		</>
