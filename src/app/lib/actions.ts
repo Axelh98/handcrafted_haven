@@ -58,6 +58,7 @@ export async function postReview(id: string, prevState: State, formData: FormDat
 	try {
 		await insertReview(name, content, id);
 	} catch (err) {
+		console.error(err);
 		return {
 			message: 'Database Error: Failed to Post Review.'
 		};
