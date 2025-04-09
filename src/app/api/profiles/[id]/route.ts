@@ -11,10 +11,11 @@ export async function GET(req: NextRequest) {
   }
 
   // GET ID PARAMETER FROM URL
-  const { id } = req.query;
+  const url = new URL(req.url);
+  const id = url.searchParams.get('id');
 
   // CHECK IF ID PARAMETER IS VALID
-  if (typeof id !== 'string') {
+  if (!id) {
     return NextResponse.json({ message: 'Invalid ID parameter' }, { status: 400 });
   }
 
