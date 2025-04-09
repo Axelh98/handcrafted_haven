@@ -1,0 +1,23 @@
+.detailImage {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
+
+	width: fit-content;
+}
+
+.detailImage figcaption {
+	width: 100%;
+
+	display: flex;
+	justify-content: space-around;
+}
+
+.badge svg {
+	font-size: larger;
+}
+
+.badge:first-child svg {
+	color: #ffc107;
+}

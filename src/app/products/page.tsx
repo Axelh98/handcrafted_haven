@@ -1,5 +1,5 @@
-import FilterList from '@/app/ui/productList/FilterList';
-import GridProducts from '@/app/ui/productList/GridProducts';
+import FilterList from '@/app/ui/products/FilterList';
+import GridProducts from '@/app/ui/products/GridProducts';
 
 export default async function Page() {
 	return (

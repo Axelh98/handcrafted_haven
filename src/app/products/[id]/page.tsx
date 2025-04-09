@@ -1,49 +1,47 @@
-import { fetchProduct } from '@/app/lib/data';
-import Image from 'next/image';
-import Link from 'next/link';
 import { RawProductDetail } from '@/app/lib/definitions';
-import { formatCurrency } from '@/app/lib/utils';
-import RatingAverage from '@/app/ui/products/RatingAverage';
-import Reviews from '@/app/ui/products/Reviews';
+import { fetchProductById, fetchProductDetail } from '@/app/lib/data';
+import DetailImage from '@/app/ui/products/detail/DetailImage';
+import DetailPresentation from '@/app/ui/products/detail/DetailPresentation';
+import Reviews from '@/app/ui/products/detail/Reviews';
+import styles from '@/app/ui/products/detail/detail.module.css';
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+type PageProps = { params: Promise<{ id: string }> };
+
+export async function generateMetadata({ params }: PageProps) {
 	const { id } = await params;
 
-	const product: RawProductDetail = await fetchProduct(id);
+	const product = await fetchProductById(id);
+
+	return {
+		title: product.name || 'Default Title',
+		description: product.description || 'Default description for the product.'
+	};
+}
+
+export default async function Page({ params }: PageProps) {
+	const { id } = await params;
+
+	const product: RawProductDetail = await fetchProductDetail(id);
 
 	return (
 		<main>
-			<section>
-				<figure>
-					<Image
-						src={`/images${product.image}`}
-						alt={`${product.title} image`}
-						width={100}
-						height={100}
-					/>
-					<figcaption>
-						<RatingAverage avg={product.rating} />
-					</figcaption>
-				</figure>
-				<article>
-					<Link href={`/products?category=${product.category_id}`}>
-						<h5>{product.category}</h5>
-					</Link>
-					<h2>{product.title}</h2>
-					<Link href={`/profiles/${product.profile_id}`}>
-						<h4>{product.profile}</h4>
-					</Link>
-					<p>
-						<b>Description:</b> {product.description}
-					</p>
-					<p>
-						<b>{formatCurrency(product.price)}</b>
-					</p>
-					<form>
-						<button>Add to cart</button>
-						<button>Add to wishlist</button>
-					</form>
-				</article>
+			<section className={styles.detailSection}>
+				<DetailImage
+					title={product.title}
+					image={product.image}
+					rating={product.rating}
+					count={product.count}
+				/>
+				<DetailPresentation
+					id={id}
+					title={product.title}
+					description={product.description}
+					price={product.price}
+					categoryId={product.category_id}
+					category={product.category}
+					profileId={product.profile_id}
+					profile={product.profile}
+				/>
 			</section>
 			<Reviews id={id} />
 		</main>

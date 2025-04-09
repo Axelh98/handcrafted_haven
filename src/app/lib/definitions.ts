@@ -67,6 +67,7 @@ interface RawProductDetail {
 	category_id: string;
 	category: string;
 	rating: number;
+	count: number;
 }
 
 type ReviewForCard = Omit<Review, 'product_id'>;

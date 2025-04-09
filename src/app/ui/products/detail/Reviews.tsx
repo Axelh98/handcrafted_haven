@@ -1,38 +1,48 @@
 'use client';
 
 import { useActionState } from 'react';
-import { useClientReviews } from '@/app/hooks/useClientReviews';
+import { formatDate } from '@/app/lib/utils';
 import { postReview, State } from '@/app/lib/actions';
-import { ReviewForCard } from '@/app/lib/definitions';
+import { useClientReviews } from '@/app/hooks/useClientReviews';
+import styles from '@/app/ui/products/detail/Reviews.module.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function Reviews({ id }: { id: string }) {
 	const initialState: State = { message: null, errors: {} };
-	const { reviews }: { reviews: ReviewForCard[] } = useClientReviews(id);
+	const { reviews, reqMoreReviews, isLast } = useClientReviews(id);
 
 	const postReviewWithId = postReview.bind(null, id);
 
 	const [state, formAction] = useActionState(postReviewWithId, initialState);
 
 	return (
-		<section>
+		<section className={styles.reviewSection}>
 			<article>
-				<ul>
+				<ul className={styles.reviews}>
 					{reviews.map(({ id, name, content, post_date }) => (
-						<li key={id}>
-							<b>{name}</b>
+						<li key={id} className={styles.reviewCard}>
+							<p>
+								<b>{name}</b>
+								<i>{formatDate(post_date)}</i>
+							</p>
 							<p>{content}</p>
-							<i>{post_date.toLocaleString()}</i>
 						</li>
 					))}
+					{!isLast && (
+						<button onClick={reqMoreReviews}>
+							<FontAwesomeIcon icon={faArrowDown} />
+						</button>
+					)}
 				</ul>
 			</article>
-			<form action={formAction}>
+			<form action={formAction} className={styles.form}>
 				<label>
-					Name:
+					Name
 					<input name='name' id='name' type='text' required />
 				</label>
 				<label>
-					Comments:
+					Comments
 					<textarea name='content' id='content' required></textarea>
 				</label>
 				<button>Submit</button>

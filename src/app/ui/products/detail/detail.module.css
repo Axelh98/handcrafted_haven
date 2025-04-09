@@ -1,0 +1,16 @@
+.detailSection {
+	width: fit-content;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 2rem;
+
+	margin: 2rem auto;
+}
+
+@media (min-width: 768px) {
+	.detailSection {
+		flex-direction: row;
+	}
+}

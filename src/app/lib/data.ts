@@ -35,48 +35,45 @@ export async function fetchBestRatedProducts() {
 // FUNCTION FOR FETCHING ALL CATEGORIES
 // lib/data.ts
 
-export async function fetchCategories(): Promise<Category[]> {
-  try {
-    const data = await sql`
+export async function fetchCategories() {
+	try {
+		const data = await sql<Category[]>`
       SELECT id, name
       FROM categories
     `;
 
-    const categories: Category[] = data.map((row: any) => ({
-      id: row.id,
-      name: row.name,
-    }));
+		const categories = data.map((row) => ({
+			id: row.id,
+			name: row.name
+		}));
 
-    console.log('Categories:', categories);
-
-    return categories;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch categories.');
-  }
+		return categories;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch categories.');
+	}
 }
-
 
 /* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
 
 /* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
 
-
-
 // FUNCTION FOR FETCHING A SINGLE PRODUCT
-export async function fetchProduct(id: string) {
+export async function fetchProductDetail(id: string) {
 	try {
 		const [product] = await sql<RawProductDetail[]>`
-		SELECT p.name title, p.description description, p.image_url image, p.price price, p.profile_id profile_id, s.name profile, p.category_id category_id, c.name category, AVG(rate) rating
+		SELECT p.name title, p.description description, p.image_url image, p.price price, p.profile_id profile_id, s.name profile, p.category_id category_id, c.name category, AVG(rate) rating, COUNT(DISTINCT rv.id) count
 		FROM products p
 		JOIN profiles s
 		ON p.profile_id = s.id
 		JOIN categories c
 		ON p.category_id = c.id
+    JOIN reviews rv
+		ON p.id = rv.product_id
 		JOIN rates r
 		ON p.id = r.product_id
 		WHERE p.id = ${id}
-		GROUP BY p.id, s.name, c.name
+		GROUP BY p.id, s.name, c.name;
 	  `;
 
 		return { ...product, rating: Number(product.rating) };
@@ -93,6 +90,7 @@ export async function fetchReviewsByProduct(id: string) {
 		SELECT id, name, content, post_date
 		FROM reviews r
 		WHERE r.product_id = ${id}
+		ORDER BY post_date DESC
 	  `;
 
 		const reviews = data.map((review) => ({ ...review, post_date: new Date(review.post_date) }));
@@ -101,6 +99,46 @@ export async function fetchReviewsByProduct(id: string) {
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch reviews.');
+	}
+}
+
+const ITEMS_PER_REQ = 3;
+export async function fetchReviewsByProductPaginated(id: string, iteration: number) {
+	const offset = (iteration - 1) * ITEMS_PER_REQ;
+
+	try {
+		const data = await sql<ReviewForCard[]>`
+		SELECT id, name, content, post_date
+		FROM reviews r
+		WHERE r.product_id = ${id}
+		ORDER BY post_date DESC
+		LIMIT ${ITEMS_PER_REQ} OFFSET ${offset}
+	  `;
+
+		const reviews = data.map((review) => ({ ...review, post_date: new Date(review.post_date) }));
+
+		return reviews;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch reviews.');
+	}
+}
+
+export async function fetchReviewsByProductPages(id: string) {
+	try {
+		const [data] = await sql`
+		SELECT COUNT(*)
+		FROM reviews
+		WHERE product_id = ${id}
+		GROUP BY product_id
+	  `;
+
+		const totalPages = Math.ceil(Number(data.count) / ITEMS_PER_REQ);
+
+		return totalPages;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch reviews pages.');
 	}
 }
 
@@ -155,48 +193,62 @@ export async function fetchProductByUser(userId: string) {
 // lib/data.ts
 
 export async function fetchProducts(): Promise<Product[]> {
-  try {
-    const data = await sql`
+	try {
+		const data = await sql`
       SELECT id, name, description, image_url, price, profile_id, category_id
       FROM products
     `;
-    return data.map((row: any) => ({
-      id: row.id,
-      name: row.name,
-      description: row.description,
-      image_url: row.image_url,
-      price: row.price,
-      profile_id: row.profile_id,
-      category_id: row.category_id,
-    }));
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to fetch products.');
-  }
+		return data.map((row) => ({
+			id: row.id,
+			name: row.name,
+			description: row.description,
+			image_url: row.image_url,
+			price: row.price,
+			profile_id: row.profile_id,
+			category_id: row.category_id
+		}));
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch products.');
+	}
 }
-
 
 export async function createProduct(product: Product): Promise<void> {
 	try {
-	  if (!product.name || !product.description || !product.image_url || !product.price || !product.profile_id || !product.category_id) {
-		throw new Error('All product fields must be defined.');
-	  }
-	  await sql`
+		if (
+			!product.name ||
+			!product.description ||
+			!product.image_url ||
+			!product.price ||
+			!product.profile_id ||
+			!product.category_id
+		) {
+			throw new Error('All product fields must be defined.');
+		}
+		await sql`
 		INSERT INTO products (name, description, image_url, price, profile_id, category_id)
 		VALUES (${product.name}, ${product.description}, ${product.image_url}, ${product.price}, ${product.profile_id}, ${product.category_id})
 	  `;
 	} catch (error) {
-	  console.error('Database Error:', error);
-	  throw new Error('Failed to create product.');
+		console.error('Database Error:', error);
+		throw new Error('Failed to create product.');
 	}
-  }
-  
-  export async function updateProduct(product: Product): Promise<void> {
+}
+
+export async function updateProduct(product: Product): Promise<void> {
 	try {
-	  if (!product.id || !product.name || !product.description || !product.image_url || !product.price || !product.profile_id || !product.category_id) {
-		throw new Error('All product fields must be defined.');
-	  }
-	  await sql`
+		if (
+			!product.id ||
+			!product.name ||
+			!product.description ||
+			!product.image_url ||
+			!product.price ||
+			!product.profile_id ||
+			!product.category_id
+		) {
+			throw new Error('All product fields must be defined.');
+		}
+		await sql`
 		UPDATE products
 		SET name = ${product.name},
 			description = ${product.description},
@@ -207,43 +259,41 @@ export async function createProduct(product: Product): Promise<void> {
 		WHERE id = ${product.id}
 	  `;
 	} catch (error) {
-	  console.error('Database Error:', error);
-	  throw new Error('Failed to update product.');
+		console.error('Database Error:', error);
+		throw new Error('Failed to update product.');
 	}
-  }
-  
-  // FUNTION FOR FETCHING A SINGLE PRODUCT BY ID
-export async function fetchProductById(id: string): Promise<Product | null> {
+}
+
+// FUNTION FOR FETCHING A SINGLE PRODUCT BY ID
+export async function fetchProductById(id: string) {
 	try {
-		const data = await sql`
+		const [data] = await sql`
       SELECT *
       FROM products
       WHERE id = ${id}
     `;
 		if (data.length === 0) {
-			return null;
+			throw new Error('Product not found');
 		}
-		return data[0];
+
+		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch product by id.');
 	}
 }
 
-
 export async function deleteProduct(id: string): Promise<void> {
-  try {
-    await sql`
+	try {
+		await sql`
       DELETE FROM products
       WHERE id = ${id}
     `;
-  } catch (error) {
-    console.error('Database Error:', error);
-    throw new Error('Failed to delete product.');
-  }
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to delete product.');
+	}
 }
-
-
 
 /* ---------------------  *******     FUNCTIONS ABOUT USERS *******   --------------------- */
 /* ---------------------  *******     FUNCTIONS ABOUT USERS *******   --------------------- */

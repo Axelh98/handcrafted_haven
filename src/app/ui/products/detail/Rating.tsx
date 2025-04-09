@@ -1,10 +1,12 @@
-import { formatRating } from '@/app/lib/utils';
+'use client';
+
 import { faStar } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { formatRating } from '@/app/lib/utils';
 
-export default function RatingAverage({ avg }: { avg: number }) {
+export default function Rating({ avg, className }: { avg: number; className: string }) {
 	return (
-		<p>
+		<p className={className}>
 			<FontAwesomeIcon icon={faStar} /> <b>{formatRating(avg)}</b>
 		</p>
 	);
