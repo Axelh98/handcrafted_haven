@@ -2,45 +2,51 @@
 
 import { useEffect, useState } from 'react';
 
+interface Review {
+  // Define the structure of a review object
+  id: string;
+  content: string;
+  // Add other relevant fields
+}
+
 export function useClientReviews(id: string) {
-	const [reviews, setReviews] = useState([]);
-	const [iteration, setIteration] = useState(1);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [iteration, setIteration] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
-	const [totalPages, setTotalPages] = useState(1);
+  useEffect(() => {
+    async function getTotalPages() {
+      const res = await fetch(`/api/products/${id}/reviews/pages`, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
 
-	useEffect(() => {
-		async function getTotalPages() {
-			const res = await fetch(`/api/products/${id}/reviews/pages`, {
-				headers: { 'Content-Type': 'application/json' }
-			});
-			const data = await res.json();
+      setTotalPages(data);
+    }
 
-			setTotalPages(data);
-		}
+    getTotalPages();
+  }, [id]);
 
-		getTotalPages();
-	}, []);
+  useEffect(() => {
+    async function getCategories() {
+      if (iteration <= totalPages) {
+        const res = await fetch(`/api/products/${id}/reviews/${iteration}`, {
+          headers: { 'Content-Type': 'application/json' }
+        });
+        const data = await res.json();
 
-	useEffect(() => {
-		async function getCategories() {
-			if (iteration <= totalPages) {
-				const res = await fetch(`/api/products/${id}/reviews/${iteration}`, {
-					headers: { 'Content-Type': 'application/json' }
-				});
-				const data = await res.json();
+        setReviews((prevState) => {
+          return [...prevState, ...data];
+        });
+      }
+    }
 
-				setReviews((prevState) => {
-					return [...prevState, ...data];
-				});
-			}
-		}
+    getCategories();
+  }, [iteration, totalPages, id]);
 
-		getCategories();
-	}, [iteration]);
+  const reqMoreReviews = () => {
+    setIteration((prevState) => prevState + 1);
+  };
 
-	const reqMoreReviews = () => {
-		setIteration((prevState) => prevState + 1);
-	};
-
-	return { reviews, reqMoreReviews, isLast: iteration === totalPages };
+  return { reviews, reqMoreReviews, isLast: iteration === totalPages };
 }

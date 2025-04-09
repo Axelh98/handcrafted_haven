@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 export function useClientGetProfile(id: number) {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     async function getProfile() {
@@ -15,7 +15,7 @@ export function useClientGetProfile(id: number) {
         });
         const data = await res.json();
         setProfile(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching profile:', error);
         setError(error);
       } finally {
