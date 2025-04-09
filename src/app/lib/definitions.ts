@@ -72,6 +72,8 @@ interface RawProductDetail {
 
 type ReviewForCard = Omit<Review, 'product_id'>;
 
+type SellerProfileDetail = Omit<SellerProfile, 'id'>;
+
 interface ProductForCard {
 	id: string;
 	name: string;
@@ -92,7 +94,8 @@ export type {
 	RawProductForCard,
 	ProductForCard,
 	RawProductDetail,
-	ReviewForCard
+	ReviewForCard,
+	SellerProfileDetail
 };
 
 // Signup form zod schema

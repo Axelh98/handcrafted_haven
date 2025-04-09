@@ -1,6 +1,11 @@
 import postgres from 'postgres';
 import { formatCurrency } from './utils';
-import { RawProductDetail, RawProductForCard, ReviewForCard } from './definitions';
+import {
+	RawProductDetail,
+	RawProductForCard,
+	ReviewForCard,
+	SellerProfileDetail
+} from './definitions';
 import { Category, Product } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
@@ -161,18 +166,18 @@ export async function insertReview(name: string, content: string, product_id: st
 /* ***** SQL FOR SELLER PROFILE COMPONENTS ***** */
 
 // FETCH SELLER PROFILE DETAIL
-export async function fetchProfile(id: string) {
+export async function fetchSellerProfile(id: string) {
 	try {
-		const data = await sql`
-      SELECT *
+		const [data] = await sql<SellerProfileDetail[]>`
+      SELECT name, about, phone, email, image_url, user_id
       FROM profiles
       WHERE id = ${id}
     `;
 
-		return data[0];
+		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
-		throw new Error('Failed to fetch profile.');
+		throw new Error('Failed to fetch seller profile.');
 	}
 }
 
