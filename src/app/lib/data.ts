@@ -5,7 +5,31 @@ import { Category, Product } from './definitions';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-// FUNCTION FOR FETCHING BEST RATED PRODUCTS
+/* ***** SQL FOR LAYOUT COMPONENTS IN FIRST INSTANCE ***** */
+
+// FETCH CATEGORIES LIST
+export async function fetchCategories() {
+	try {
+		const data = await sql<Category[]>`
+      SELECT id, name
+      FROM categories
+    `;
+
+		const categories = data.map((row) => ({
+			id: row.id,
+			name: row.name
+		}));
+
+		return categories;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch categories.');
+	}
+}
+
+/* ***** SQL FOR LANDING COMPONENTS IN FIRST INSTANCE ***** */
+
+// FETCH 6 BEST RATED PRODUCTS
 export async function fetchBestRatedProducts() {
 	try {
 		const data = await sql<RawProductForCard[]>`
@@ -32,33 +56,9 @@ export async function fetchBestRatedProducts() {
 	}
 }
 
-// FUNCTION FOR FETCHING ALL CATEGORIES
-// lib/data.ts
+/* ***** SQL FOR PRODUCT DETAIL COMPONENTS ***** */
 
-export async function fetchCategories() {
-	try {
-		const data = await sql<Category[]>`
-      SELECT id, name
-      FROM categories
-    `;
-
-		const categories = data.map((row) => ({
-			id: row.id,
-			name: row.name
-		}));
-
-		return categories;
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch categories.');
-	}
-}
-
-/* ---------------------  *******     FUNCTIONS ABOUT PRODUCTS *******   --------------------- */
-
-/* >>>>>>>> GET FUNCTIONS ABOUT PRODUCTS <<<<<<< */
-
-// FUNCTION FOR FETCHING A SINGLE PRODUCT
+// FETCH PRODUCT DETAIL BY ID
 export async function fetchProductDetail(id: string) {
 	try {
 		const [product] = await sql<RawProductDetail[]>`
@@ -83,7 +83,7 @@ export async function fetchProductDetail(id: string) {
 	}
 }
 
-// FUNCTION FOR FETCHING A SINGLE REVIEWS BY PRODUCT ID
+// FETCH PRODUCT REVIEWS FOR PRODUCT ID
 export async function fetchReviewsByProduct(id: string) {
 	try {
 		const data = await sql<ReviewForCard[]>`
@@ -102,7 +102,9 @@ export async function fetchReviewsByProduct(id: string) {
 	}
 }
 
+// FETCH PRODUCT REVIEWS FOR PRODUCT ID IMPLETENTING PAGINATION
 const ITEMS_PER_REQ = 3;
+
 export async function fetchReviewsByProductPaginated(id: string, iteration: number) {
 	const offset = (iteration - 1) * ITEMS_PER_REQ;
 
@@ -124,6 +126,7 @@ export async function fetchReviewsByProductPaginated(id: string, iteration: numb
 	}
 }
 
+// FETCH PRODUCT REVIEWS TOTAL PAGES FOR PAGINATION
 export async function fetchReviewsByProductPages(id: string) {
 	try {
 		const [data] = await sql`
@@ -142,6 +145,7 @@ export async function fetchReviewsByProductPages(id: string) {
 	}
 }
 
+// POST PRODUCT REVIEW
 export async function insertReview(name: string, content: string, product_id: string) {
 	try {
 		await sql`
@@ -151,6 +155,24 @@ export async function insertReview(name: string, content: string, product_id: st
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to insert reviews.');
+	}
+}
+
+/* ***** SQL FOR SELLER PROFILE COMPONENTS ***** */
+
+// FETCH SELLER PROFILE DETAIL
+export async function fetchProfile(id: string) {
+	try {
+		const data = await sql`
+      SELECT *
+      FROM profiles
+      WHERE id = ${id}
+    `;
+
+		return data[0];
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch profile.');
 	}
 }
 
@@ -354,22 +376,6 @@ export async function fetchProfiles() {
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch profiles.');
-	}
-}
-
-// FUNCTION FOR FETCHING A SINGLE PROFILE
-export async function fetchProfile(id: string) {
-	try {
-		const data = await sql`
-      SELECT *
-      FROM profiles
-      WHERE id = ${id}
-    `;
-
-		return data[0];
-	} catch (error) {
-		console.error('Database Error:', error);
-		throw new Error('Failed to fetch profile.');
 	}
 }
 
