@@ -45,3 +45,4 @@ export function useClientReviews(id: string) {
 
 	return { reviews, reqMoreReviews, isLast: iteration === totalPages };
 }
+
