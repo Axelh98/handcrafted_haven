@@ -1,8 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { fontHeading } from '@/app/ui/fonts';
+import ShopCart from '@/app/ui/layout/ShopCart';
 import Search from '@/app/ui/layout/Search';
 import Navbar from '@/app/ui/layout/Navbar';
 import CategoryList from '@/app/ui/layout/CategoryList';
@@ -28,9 +27,7 @@ export default function Header() {
 				<Link href='/contact' className='link'>
 					Contact
 				</Link>
-				<Link href='/cart' className='link'>
-					<FontAwesomeIcon icon={faShoppingCart} />
-				</Link>
+				<ShopCart />
 			</Navbar>
 		</header>
 	);
