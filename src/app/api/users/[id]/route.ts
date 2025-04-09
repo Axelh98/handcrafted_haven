@@ -1,6 +1,5 @@
 // IMPORT DATA QUERIES FETCHING A SINGLE USER
 import { fetchUser } from '@/app/lib/data';
-
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -11,7 +10,9 @@ export async function GET(req: NextRequest) {
 	}
 
 	// GET ID PARAMETER FROM URL
-	const { id } = req.query;
+	const url = new URL(req.url);
+	const id = url.searchParams.get('id');
+  
 
 	// CHECK IF ID PARAMETER IS VALID
 	if (typeof id !== 'string') {

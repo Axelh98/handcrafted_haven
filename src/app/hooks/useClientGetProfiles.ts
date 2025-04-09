@@ -15,7 +15,7 @@ export function useClientGetProfiles() {
         });
         const data = await res.json();
         setProfiles(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching profiles:', error);
         setError(error);
       } finally {

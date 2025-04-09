@@ -15,7 +15,7 @@ export function useClientProduct(id: number) {
         });
         const data = await res.json();
         setProduct(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Error fetching product:', error);
         setError(error);
       } finally {
