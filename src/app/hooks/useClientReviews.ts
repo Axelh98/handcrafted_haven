@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ReviewForCard } from '../lib/definitions';
 
 export function useClientReviews(id: string) {
-	const [reviews, setReviews] = useState([]);
-	const [iteration, setIteration] = useState(1);
+	const [reviews, setReviews] = useState<ReviewForCard[]>([]);
+	const [iteration, setIteration] = useState<number>(1);
 
-	const [totalPages, setTotalPages] = useState(1);
+	const [totalPages, setTotalPages] = useState<number>(1);
 
 	useEffect(() => {
 		async function getTotalPages() {
@@ -22,7 +23,7 @@ export function useClientReviews(id: string) {
 	}, []);
 
 	useEffect(() => {
-		async function getCategories() {
+		async function getReviews() {
 			if (iteration <= totalPages) {
 				const res = await fetch(`/api/products/${id}/reviews/${iteration}`, {
 					headers: { 'Content-Type': 'application/json' }
@@ -35,7 +36,7 @@ export function useClientReviews(id: string) {
 			}
 		}
 
-		getCategories();
+		getReviews();
 	}, [iteration]);
 
 	const reqMoreReviews = () => {

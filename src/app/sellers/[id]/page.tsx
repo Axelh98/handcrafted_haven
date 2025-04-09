@@ -38,7 +38,7 @@ export default async function Page({ params }: PageProps) {
 			</section>
 			<section>
 				<h2>Top Products</h2>
-				<Carousel params={{ qty: 6, profile: id }} />
+				<Carousel params={{ qty: '6', profile: id }} />
 				<Link href={`/products?seller=${id}`}>See more...</Link>
 			</section>
 		</main>
