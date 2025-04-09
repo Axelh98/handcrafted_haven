@@ -1,8 +1,8 @@
 // IMPORT DATA QUERIES FETCHING A SINGLE PROFILE
 import { fetchProfile } from '@/app/lib/data';
-
 import { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
+
 
 export async function GET(req: NextRequest) {
   // CHECK IF CONTENT-TYPE IS APPLICATION/JSON
@@ -11,10 +11,11 @@ export async function GET(req: NextRequest) {
   }
 
   // GET ID PARAMETER FROM URL
-  const { id } = req.query;
+  const url = new URL(req.url);
+  const id = url.searchParams.get('id');
 
   // CHECK IF ID PARAMETER IS VALID
-  if (typeof id !== 'string') {
+  if (!id) {
     return NextResponse.json({ message: 'Invalid ID parameter' }, { status: 400 });
   }
 
