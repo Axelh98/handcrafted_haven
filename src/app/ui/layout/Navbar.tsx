@@ -4,7 +4,7 @@ import { Children, useId } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
 import { useClientResize } from '@/app/hooks/useClientResize';
-import styles from './navbar.module.css';
+import styles from '@/app/ui/layout/navbar.module.css';
 
 export default function Navbar({ children }: { children: React.ReactElement[] }) {
 	const navID = useId();

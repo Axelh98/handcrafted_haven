@@ -32,7 +32,7 @@ export default function DetailPresentation({
 			</Link>
 			<h2>{title}</h2>
 			<h4>
-				Seller: <Link href={`/profiles/${profileId}`}>{profile}</Link>
+				Seller: <Link href={`/sellers/${profileId}`}>{profile}</Link>
 			</h4>
 			<p className={styles.description}>
 				<b>Description:</b> {description}

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { fontBody } from './ui/fonts';
-import Header from './ui/landingPage/Header';
+import Header from './ui/layout/Header';
 import './globals.css';
 
 export const metadata: Metadata = {

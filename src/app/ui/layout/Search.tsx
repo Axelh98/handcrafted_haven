@@ -5,7 +5,7 @@ import {
 	useClientSearchFromAnywhere,
 	useClientSearchInProducts
 } from '@/app/hooks/useClientSearch';
-import styles from './search.module.css';
+import styles from '@/app/ui/layout/search.module.css';
 
 export default function Search({ placeholder }: { placeholder: string }) {
 	const { state, formAction } = useClientSearchFromAnywhere();
