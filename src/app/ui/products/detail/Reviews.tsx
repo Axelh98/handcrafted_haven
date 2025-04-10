@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowDown } from '@fortawesome/free-solid-svg-icons';
 
 export default function Reviews({ id }: { id: string }) {
-	const initialState: State = { message: null, errors: {} };
+	const initialState: State = { message: '', errors: {} };
 	const { reviews, reqMoreReviews, isLast } = useClientReviews(id);
 
 	const postReviewWithId = postReview.bind(null, id);
@@ -47,8 +47,16 @@ export default function Reviews({ id }: { id: string }) {
 				</label>
 				<button>Submit</button>
 			</form>
-			{state.errors?.name && state.errors.name.map((error: string) => console.error(error))}
-			{state.errors?.content && state.errors.content.map((error: string) => console.error(error))}
+			{state.errors?.name &&
+				state.errors.name.map((error: string) => {
+					console.error(error);
+					return <></>;
+				})}
+			{state.errors?.content &&
+				state.errors.content.map((error: string) => {
+					console.error(error);
+					return <></>;
+				})}
 		</section>
 	);
 }

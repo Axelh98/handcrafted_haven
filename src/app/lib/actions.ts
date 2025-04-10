@@ -20,7 +20,7 @@ export type State = {
 		name?: string[];
 		content?: string[];
 	};
-	message?: string | null;
+	message: string;
 };
 
 export async function searchFromHome(prevState: State, formData: FormData) {
