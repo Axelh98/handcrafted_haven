@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { fontHeading } from '@/app/ui/fonts';
 import ShopCart from '@/app/ui/layout/ShopCart';
 import Search from '@/app/ui/layout/Search';
-import Navbar from '@/app/ui/layout/Navbar';
+import Navbar from '@/app/ui/layout/ClientNavbar';
 import CategoryList from '@/app/ui/layout/CategoryList';
 import styles from '@/app/ui/layout/header.module.css';
 
