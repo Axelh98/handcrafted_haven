@@ -6,7 +6,10 @@ import { useActionState } from 'react';
 
 export function useClientSearchFromAnywhere() {
 	const initialState: State = { message: '', errors: {} };
-	const [state, formAction] = useActionState(searchFromHome, initialState);
+	const [state, formAction] = useActionState(
+		searchFromHome as (state: State, payload: FormData) => Promise<State>,
+		initialState
+	);
 
 	return { state, formAction };
 }

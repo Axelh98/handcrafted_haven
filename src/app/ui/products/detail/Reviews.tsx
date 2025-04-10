@@ -14,7 +14,10 @@ export default function Reviews({ id }: { id: string }) {
 
 	const postReviewWithId = postReview.bind(null, id);
 
-	const [state, formAction] = useActionState(postReviewWithId, initialState);
+	const [state, formAction] = useActionState(
+		postReviewWithId as (state: State, payload: FormData) => Promise<State>,
+		initialState
+	);
 
 	return (
 		<section className={styles.reviewSection}>
