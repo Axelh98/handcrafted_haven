@@ -15,7 +15,7 @@ const ReviewSchema = z.object({
 });
 
 export type State = {
-	errors?: {
+	errors: {
 		query?: string[];
 		name?: string[];
 		content?: string[];
