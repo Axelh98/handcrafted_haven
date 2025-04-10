@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { Suspense } from 'react';
 import { fontHeading } from '@/app/ui/fonts';
 import ShopCart from '@/app/ui/layout/ShopCart';
 import Search from '@/app/ui/layout/Search';
@@ -18,7 +19,9 @@ export default function Header() {
 					</figcaption>
 				</figure>
 			</Link>
-			<Search placeholder='Search products...' />
+			<Suspense fallback={<div>Loading...</div>}>
+				<Search placeholder='Search products...' />
+			</Suspense>
 			<Navbar>
 				<CategoryList summary='Products' />
 				<Link href='/sellers' className='link'>

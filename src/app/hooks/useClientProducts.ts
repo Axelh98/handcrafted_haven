@@ -1,9 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { Product } from '../lib/definitions';
 
 export function useClientProducts() {
-	const [products, setProducts] = useState([]);
+	const [products, setProducts] = useState<Product[]>([]);
 
 	useEffect(() => {
 		async function getProducts() {
@@ -15,8 +16,8 @@ export function useClientProducts() {
 			setProducts(data);
 		}
 
-        // mostrar en consola
-        console.log('Products:', products);
+		// mostrar en consola
+		console.log('Products:', products);
 
 		getProducts();
 	}, []);
