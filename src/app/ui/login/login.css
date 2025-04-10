@@ -1,57 +1,57 @@
-
-.signup__container {
+/* Container centrado */
+.login__container {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-}
-
-/****************
-      FORM
-*****************/
-.signup {
+    width: 100vw;
+  }
+  
+  /***************
+        FORM
+  ***************/
+  .login {
     background-color: white;
-    width: 100%;
     max-width: 500px;
+    width: 100%;
     padding: 50px 70px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-  
     border-radius: 20px;
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-      0 4px 6px -2px rgba(0, 0, 0, 0.05);
+                0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
   
-  h1 {
+  /***************
+       TÍTULOS
+  ***************/
+  .login__title {
     font-size: 40px;
     text-align: center;
     color: var(--color-primary);
+    margin-bottom: 30px;
   }
-  h2 {
+  
+  .login__subtitle {
     text-align: center;
     font-size: 1.2rem;
     font-weight: lighter;
-  
     margin-bottom: 40px;
   }
   
-  h2 span {
-    text-decoration: underline;
-    cursor: pointer;
-    color: var(--color-secondary);
-  }
-  
-  /*  Field */
-  .signup__field {
+  /***************
+       CAMPOS
+  ***************/
+  .login__field {
     display: flex;
     flex-direction: column;
     width: 100%;
     position: relative;
     margin-bottom: 50px;
   }
-  
-  .signup__field:before {
+
+  .login__field:before {
     content: "";
     display: inline-block;
     position: absolute;
@@ -64,48 +64,69 @@
     transition: all 0.4s ease;
   }
   
-  .signup__field:hover:before {
+  .login__field:hover:before {
     width: 100%;
   }
   
-  /*  Input */
-  .signup__input {
+
+  .login__input {
     width: 100%;
-    height: 100%;
     font-size: 1.2rem;
     padding: 10px 2px 0;
+    border: none;
     border-bottom: 2px solid #e0e0e0;
+    outline: none;
   }
   
-  /*  Label */
-  .signup__label {
-    color: #bdbdbd;
+  /***************
+      TOGGLE PASS
+  ***************/
+  .login__toggle-password {
     position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    left: 2px;
-    font-size: 1.2rem;
-    transition: all 0.3s ease;
+    right: 0;
+    bottom: 5px;
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    color: var(--color-secondary);
+    cursor: pointer;
   }
   
-  .signup__input:focus + .signup__label,
-  .signup__input:valid + .signup__label {
-    top: 0;
-    font-size: 1rem;
-    background-color: white;
-  }
-  
-  /*  Button */
-  button {
+  /***************
+       BOTÓN
+  ***************/
+  .login__button {
     background: var(--color-primary);
     color: white;
     padding: 12px 0;
     font-size: 1.2rem;
     border-radius: 25px;
     cursor: pointer;
+    border: none;
   }
   
-  button:hover {
+  .login__button:hover {
     background: var(--color-secondary);
+  }
+  
+  /***************
+     MENSAJES Y LINK
+  ***************/
+  .login__message {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  .login__link {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .login__link span {
+    color: var(--color-secondary);
+    text-decoration: underline;
+    cursor: pointer;
   }
   

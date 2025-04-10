@@ -1,6 +1,6 @@
 'use-client';
 // import login
-import SignupForm from '@/app/ui/login/SingUpForm'
+import SignupForm from '@/app/ui/singup/SingUpForm'
 
 export default function Login() {
   return (
