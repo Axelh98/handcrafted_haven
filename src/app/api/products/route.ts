@@ -1,13 +1,23 @@
 import { NextResponse } from 'next/server';
 import { Product } from '@/app/lib/definitions';
-import { createProduct, fetchProducts } from '@/app/lib/data';
+import { createProduct, fetchProducts, fetchProductsByUserId } from '@/app/lib/data';
 
-// Función para obtener todos los productos
-export async function GET() {
+
+// GET /api/products or /api/products?userId=123
+export async function GET(req: Request) {
+  const url = new URL(req.url);
+  const userId = url.searchParams.get('userId');
+
   try {
-    const products: Product[] = await fetchProducts();
-    return NextResponse.json(products, { status: 200 });
+    if (userId) {
+      const products = await fetchProductsByUserId(userId);
+      return NextResponse.json(products, { status: 200 });
+    } else {
+      const products = await fetchProducts();
+      return NextResponse.json(products, { status: 200 });
+    }
   } catch (error) {
+    console.error(error);
     return NextResponse.json({ error: 'Failed to fetch products.' }, { status: 500 });
   }
 }
