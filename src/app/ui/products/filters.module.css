@@ -1,0 +1,37 @@
+.filters {
+	padding: 16px;
+	background-color: #d1d5db; /* bg-gray-300 */
+	border-radius: 8px;
+}
+
+.filterGroup {
+	margin-bottom: 16px;
+}
+
+.filterLabel {
+	display: block;
+	margin-bottom: 8px;
+	font-size: 1rem;
+	font-weight: 500;
+	color: #1e293b; /* text-slate-800 */
+}
+
+.filterSelect,
+.filterCheckbox {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #cbd5e1; /* border-gray-300 */
+	border-radius: 4px;
+	background-color: #ffffff; /* bg-white */
+	font-size: 1rem;
+	color: #1e293b; /* text-slate-800 */
+}
+
+.filterCheckbox {
+	display: flex;
+	align-items: center;
+}
+
+.filterCheckbox input {
+	margin-right: 8px;
+}

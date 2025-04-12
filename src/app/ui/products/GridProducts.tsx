@@ -1,8 +1,6 @@
-'use client';
-
+import GridItem from './GridItem';
 import { RawProductForCard } from '@/app/lib/definitions';
-import './ProductListPage.css';
-import ProductCard from '../ProductCard';
+import styles from '@/app/ui/products/grid.module.css';
 
 type Props = {
 	products: RawProductForCard[];
@@ -10,26 +8,10 @@ type Props = {
 
 export default function GridProducts({ products }: Props) {
 	return (
-		<div className='products'>
+		<section className={styles.products}>
 			{products.map((product) => (
-				<ProductCard key={product.id} product={product} />
-				// <div key={product.id} className='product-card'>
-				// 	<div className='product-image'>
-				// 		<img src={product.imageUrl} alt='card-image' />
-				// 		<link rel='stylesheet' href='/productDetail' />
-				// 	</div>
-				// 	<div className='product-details'>
-				// 		<div className='product-title'>
-				// 			<p>{product.name}</p>
-				// 			<p className='product-price'>{product.price}</p>
-				// 		</div>
-				// 		<p className='product-description'>{product.description}</p>
-				// 		<button className='add-to-cart-button' type='button'>
-				// 			Add to Cart
-				// 		</button>
-				// 	</div>
-				// </div>
+				<GridItem key={product.id} item={product} />
 			))}
-		</div>
+		</section>
 	);
 }

@@ -1,0 +1,14 @@
+.main {
+	max-width: 80%;
+	margin: 100px auto;
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 16px;
+}
+
+@media (min-width: 1024px) {
+	.main {
+		grid-template-columns: 200px 1fr;
+		gap: 32px;
+	}
+}
