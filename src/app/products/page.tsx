@@ -1,7 +1,8 @@
 import FilterList from '@/app/ui/products/FilterList';
-import GridProducts from '@/app/ui/products/GridProducts';
+import Grid from '@/app/ui/Grid';
 import { ProductSearch } from '../lib/definitions';
 import { fetchFilteredProducts } from '../lib/data';
+import gridStyle from '@/app/ui/products/grid.module.css';
 import styles from '@/app/ui/products/products.module.css';
 
 type PageProps = {
@@ -16,8 +17,7 @@ export default async function Page(props: PageProps) {
 	return (
 		<main className={styles.main}>
 			<FilterList />
-
-			<GridProducts products={products} />
+			<Grid items={products} customStyle={gridStyle.customGrid} />
 		</main>
 	);
 }

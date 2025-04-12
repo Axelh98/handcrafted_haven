@@ -1,7 +1,10 @@
 .filters {
+	grid-column: 2 / 3;
 	padding: 16px;
 	background-color: #d1d5db; /* bg-gray-300 */
 	border-radius: 8px;
+
+	align-self: start;
 }
 
 .filterGroup {
@@ -34,4 +37,10 @@
 
 .filterCheckbox input {
 	margin-right: 8px;
+}
+
+@media (min-width: 768px) {
+	.filters {
+		grid-column: 1 / 3;
+	}
 }

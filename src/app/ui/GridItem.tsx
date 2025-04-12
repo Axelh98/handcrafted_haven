@@ -2,7 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { RawProductForCard } from '@/app/lib/definitions';
 import { formatCurrency } from '@/app/lib/utils';
-import styles from '@/app/ui/products/GridItem.module.css';
+import styles from '@/app/ui/GridItem.module.css';
 
 type Props = {
 	item: RawProductForCard;
