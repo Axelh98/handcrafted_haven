@@ -2,9 +2,10 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { ProductForCard } from '@/app/lib/definitions';
+import { RawProductForCard } from '@/app/lib/definitions';
+import { formatCurrency } from '../lib/utils';
 
-export default function ProductCard({ product }: { product: ProductForCard }) {
+export default function ProductCard({ product }: { product: RawProductForCard }) {
 	return (
 		<div className='carousel-slide'>
 			<div className='carousel-image-container'>
@@ -17,7 +18,7 @@ export default function ProductCard({ product }: { product: ProductForCard }) {
 			</div>
 			<div className='carousel-details'>
 				<p className='carousel-title'>{product.name}</p>
-				<p className='carousel-price'>{product.price}</p>
+				<p className='carousel-price'>{formatCurrency(product.price)}</p>
 				<Link href={`/sellers/${product.profile_id}`} className='carousel-description'>
 					{product.profile_name}
 				</Link>

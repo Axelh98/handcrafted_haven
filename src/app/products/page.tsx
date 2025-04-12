@@ -1,14 +1,22 @@
 import FilterList from '@/app/ui/products/FilterList';
 import GridProducts from '@/app/ui/products/GridProducts';
+import { ProductSearch } from '../lib/definitions';
+import { fetchFilteredProducts } from '../lib/data';
 
-export default async function Page() {
+type PageProps = {
+	searchParams?: Promise<ProductSearch>;
+};
+
+export default async function Page(props: PageProps) {
+	const searchParams = (await props.searchParams) || {};
+
+	const products = await fetchFilteredProducts(searchParams);
+
 	return (
-		<div className='product-list-page'>
-			{/* Columna de filtros */}
+		<main>
 			<FilterList />
 
-			{/* Columna de productos */}
-			<GridProducts />
-		</div>
+			<GridProducts products={products} />
+		</main>
 	);
 }

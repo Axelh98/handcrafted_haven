@@ -1,6 +1,6 @@
 import postgres from 'postgres';
-import { formatCurrency } from './utils';
 import {
+	ProductSearch,
 	RawProductDetail,
 	RawProductForCard,
 	ReviewForCard,
@@ -34,7 +34,7 @@ export async function fetchCategories() {
 
 /* ***** SQL FOR LANDING COMPONENTS IN FIRST INSTANCE ***** */
 
-// FETCH 6 BEST RATED PRODUCTS
+// FETCH BEST RATED PRODUCTS
 export async function fetchBestRatedProducts(qty: number, profileId?: string) {
 	try {
 		const data = await sql<RawProductForCard[]>`
@@ -50,12 +50,7 @@ export async function fetchBestRatedProducts(qty: number, profileId?: string) {
       ${qty && sql`LIMIT ${qty}`}
     `;
 
-		const products = data.map((product) => ({
-			...product,
-			price: formatCurrency(product.price)
-		}));
-
-		return products;
+		return data;
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch best rated products.');
@@ -179,6 +174,87 @@ export async function fetchSellerProfile(id: string) {
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch seller profile.');
+	}
+}
+
+/* ***** SQL FOR PRODUCTS COMPONENTS ***** */
+
+// FETCH FILTERED PRODUCTS
+export async function fetchFilteredProducts({ query, category, seller }: ProductSearch) {
+	const searchConditions = [];
+	const categoryConditions = [];
+	const sellerConditions = [];
+
+	if (query) {
+		searchConditions.push(sql`p.name ILIKE ${'%' + query + '%'}`);
+	}
+
+	if (category) {
+		categoryConditions.push(sql`c.id = ${category}`);
+	} else if (query) {
+		searchConditions.push(sql`c.name ILIKE ${'%' + query + '%'}`);
+	}
+
+	if (seller) {
+		sellerConditions.push(sql`s.id = ${seller}`);
+	} else if (query) {
+		searchConditions.push(sql`s.name ILIKE ${'%' + query + '%'}`);
+	}
+
+	let where = sql``;
+
+	const allConditions = [];
+
+	if (searchConditions.length > 0) {
+		let searchClause = sql`(`;
+
+		for (let i = 0; i < searchConditions.length; i++) {
+			if (i > 0) {
+				searchClause = sql`${searchClause} OR `;
+			}
+			searchClause = sql`${searchClause} ${searchConditions[i]}`;
+		}
+
+		searchClause = sql`${searchClause})`;
+		allConditions.push(searchClause);
+	}
+
+	if (categoryConditions.length > 0) {
+		allConditions.push(categoryConditions[0]);
+	}
+
+	if (sellerConditions.length > 0) {
+		allConditions.push(sellerConditions[0]);
+	}
+
+	if (allConditions.length > 0) {
+		where = sql`WHERE `;
+		for (let i = 0; i < allConditions.length; i++) {
+			if (i > 0) {
+				where = sql`${where} AND `;
+			}
+			where = sql`${where} ${allConditions[i]}`;
+		}
+	}
+
+	try {
+		const data = await sql<RawProductForCard[]>`
+			SELECT p.id id, p.name name, p.image_url image_url, p.price price, p.profile_id profile_id, s.name profile_name, AVG(rate) rate_avg
+			FROM products p
+			JOIN profiles s 
+			ON p.profile_id = s.id
+			JOIN categories c 
+			ON p.category_id = c.id
+			JOIN rates r 
+			ON p.id = r.product_id
+			${where}
+			GROUP BY p.id, s.name;
+			`;
+
+		return data;
+	} catch (error) {
+		console.error('Datab Error:', error);
+		throw new Error('Failed to fetch filtered products.');
 	}
 }
 

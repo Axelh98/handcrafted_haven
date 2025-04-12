@@ -37,7 +37,7 @@ export async function searchFromHome(prevState: State, formData: FormData) {
 
 	const { query } = validatedFields.data;
 
-	redirect(`/products?q=${query}`);
+	redirect(`/products?query=${query}`);
 }
 
 export async function postReview(id: string, prevState: State, formData: FormData) {

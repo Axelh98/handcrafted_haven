@@ -84,6 +84,12 @@ interface ProductForCard {
 	rate_avg: number;
 }
 
+interface ProductSearch {
+	query?: string;
+	category?: string;
+	seller?: string;
+}
+
 export type {
 	User,
 	SellerProfile,
@@ -95,7 +101,8 @@ export type {
 	ProductForCard,
 	RawProductDetail,
 	ReviewForCard,
-	SellerProfileDetail
+	SellerProfileDetail,
+	ProductSearch
 };
 
 // Signup form zod schema

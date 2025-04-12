@@ -19,7 +19,7 @@ export function useClientSearchInProducts() {
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
-	const [query, setQuery] = useState<string>(searchParams.get('q')?.toString() || '');
+	const [query, setQuery] = useState<string>(searchParams.get('query')?.toString() || '');
 	const isFirstInput = useRef<boolean>(true);
 
 	const handleSearch = useDebouncedCallback((term: string) => {
@@ -28,9 +28,9 @@ export function useClientSearchInProducts() {
 		params.set('page', '1');
 
 		if (term) {
-			params.set('q', term);
+			params.set('query', term);
 		} else {
-			params.delete('q');
+			params.delete('query');
 		}
 
 		replace(`${pathname}?${params.toString()}`);
