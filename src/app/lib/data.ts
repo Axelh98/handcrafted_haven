@@ -1,10 +1,11 @@
 import postgres from 'postgres';
 import {
 	BoundPrices,
-	ProductSearch,
 	RawProductDetail,
 	RawProductForCard,
 	ReviewForCard,
+	Search,
+	SellerProfile,
 	SellerProfileDetail
 } from './definitions';
 import { Category, Product } from './definitions';
@@ -181,7 +182,7 @@ export async function fetchSellerProfile(id: string) {
 /* ***** SQL FOR PRODUCTS COMPONENTS ***** */
 
 // FETCH FILTERED PRODUCTS
-export async function fetchFilteredProducts({ query, category, seller, minPrice }: ProductSearch) {
+export async function fetchFilteredProducts({ query, category, seller, minPrice }: Search) {
 	const searchConditions = [];
 	const categoryConditions = [];
 	const sellerConditions = [];
@@ -268,7 +269,8 @@ export async function fetchFilteredProducts({ query, category, seller, minPrice 
 	}
 }
 
-export async function fetchBoundPrices({ query, category, seller }: ProductSearch) {
+// FETCH BOUND PRICES
+export async function fetchBoundPrices({ query, category, seller }: Search) {
 	const searchConditions = [];
 	const categoryConditions = [];
 	const sellerConditions = [];
@@ -340,6 +342,26 @@ export async function fetchBoundPrices({ query, category, seller }: ProductSearc
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch bound prices.');
+	}
+}
+
+/* ***** SQL FOR SELLERS COMPONENTS ***** */
+
+// FETCH FILTERED SELLERS
+export async function fetchFilteredSellers({ query }: Search) {
+	const where = query ? sql`WHERE name ILIKE ${`%${query}%`}` : sql``;
+
+	try {
+		const data = await sql<SellerProfile[]>`
+      SELECT *
+      FROM profiles
+			${where}
+    `;
+
+		return data;
+	} catch (error) {
+		console.error('Database Error:', error);
+		throw new Error('Failed to fetch profiles.');
 	}
 }
 
