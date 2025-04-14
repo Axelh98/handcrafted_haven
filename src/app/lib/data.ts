@@ -402,6 +402,44 @@ export async function fetchProducts(): Promise<Product[]> {
 	}
 }
 
+// Fetch products by user ID
+export async function fetchProductsByUserId(userId: string): Promise<Product[]> {
+	try {
+	  // Paso 1: Buscar el perfil del vendedor asociado al userId
+	  const profileResult = await sql`
+		SELECT id FROM profiles WHERE user_id = ${userId}
+	  `;
+  
+	  if (profileResult.length === 0) {
+		console.log("No se encontró perfil de vendedor para el usuario:", userId);
+		return []; // No hay perfil, entonces no hay productos
+	  }
+  
+	  const sellerProfileId = profileResult[0].id;
+  
+	  // Paso 2: Buscar productos por profile_id
+	  const data = await sql`
+		SELECT id, name, description, image_url, price, profile_id, category_id
+		FROM products
+		WHERE profile_id = ${sellerProfileId}
+	  `;
+  
+	  return data.map((row) => ({
+		id: row.id,
+		name: row.name,
+		description: row.description,
+		image_url: row.image_url,
+		price: row.price,
+		profile_id: row.profile_id,
+		category_id: row.category_id
+	  }));
+	} catch (error) {
+	  console.error('Database Error:', error);
+	  throw new Error('Failed to fetch products by user ID.');
+	}
+  }
+  
+
 export async function createProduct(product: Product): Promise<void> {
 	try {
 		if (
@@ -547,6 +585,7 @@ export async function fetchProfiles() {
 }
 
 // FUNCTION FOR FETCHING A SINGLE PROFILE BY USER
+
 export async function fetchProfileByUser(userId: string) {
 	try {
 		const data = await sql`
@@ -555,7 +594,7 @@ export async function fetchProfileByUser(userId: string) {
       WHERE user_id = ${userId}
     `;
 
-		return data;
+		return data[0]; // 👈 Accedé directamente al primer perfil
 	} catch (error) {
 		console.error('Database Error:', error);
 		throw new Error('Failed to fetch profile by user.');

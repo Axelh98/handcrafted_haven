@@ -1,12 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { SellerProfile } from '../lib/definitions';
+
+import { SellerProfile } from "@/app/lib/definitions"; // 👈 importa el tipo correcto
 
 export function useClientGetProfile(id: number) {
-	const [profile, setProfile] = useState<SellerProfile>({} as SellerProfile);
-	const [loading, setLoading] = useState<boolean>(true);
-	const [error, setError] = useState<string>('');
+  const [profile, setProfile] = useState<SellerProfile | null>(null); // 👈 tipo explícito
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
 	useEffect(() => {
 		async function getProfile() {
@@ -26,8 +27,10 @@ export function useClientGetProfile(id: number) {
 			}
 		}
 
-		getProfile();
-	}, [id]);
+
+    if (id) getProfile();
+  }, [id]);
+
 
 	return { profile, loading, error };
 }
