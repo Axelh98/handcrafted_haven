@@ -1,3 +1,5 @@
+'use client'
+
 import { ChangeEvent, useState, useEffect, useRef } from 'react';
 import { searchFromHome, State } from '@/app/lib/actions';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
