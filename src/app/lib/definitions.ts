@@ -88,6 +88,7 @@ interface ProductSearch {
 	query?: string;
 	category?: string;
 	seller?: string;
+	minPrice?: number;
 }
 
 export type {

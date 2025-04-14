@@ -16,7 +16,7 @@ export default async function Page(props: PageProps) {
 
 	return (
 		<main className={styles.main}>
-			<FilterList />
+			<FilterList currentParams={searchParams} />
 			<Grid items={products} customStyle={gridStyle.customGrid} />
 		</main>
 	);
