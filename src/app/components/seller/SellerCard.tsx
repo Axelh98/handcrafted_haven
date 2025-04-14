@@ -1,6 +1,8 @@
+'use client';
+
 import { Grid, Typography, Box } from '@mui/material';
 import { styled } from '@mui/system';
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
 const CardGrid = styled('div')({
   display: 'grid',
@@ -55,3 +57,6 @@ const SellerCard = ({ seller }: SellerCardProps) => {
 };
 
 export default SellerCard;
+
+
+

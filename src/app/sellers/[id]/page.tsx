@@ -1,46 +1,61 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
-import { fetchSellerProfile } from '@/app/lib/data';
+import { supabase } from '@/app/lib/supabaseClient';
 import ContactInfo from '@/app/ui/sellers/profile/ContactInfo';
 import Carousel from '@/app/ui/Carousel';
+import SellerCard from '@/app/ui/sellers/profile/SellerCard';
 
-type PageProps = { params: Promise<{ id: string }> };
+type SellerProfile = {
+  id: string;
+  name: string;
+  about: string;
+  phone: string;
+  email: string;
+  imageUrl: string;
+};
 
-export async function generateMetadata({ params }: PageProps) {
-	const { id } = await params;
+const Page = (
+) => {
+  const router = useRouter();
+  const { id } = router.query;
+  const [profile, setProfile] = useState<SellerProfile | undefined>();
 
-	const profile = await fetchSellerProfile(id);
+  useEffect(() => {
+    const fetchSellerProfile = async (): Promise<void> => {
+      const { data, error } = await supabase
+        .from('sellers')
+        .select()
+        .match({ id })
+        .single();
 
-	return {
-		title: profile.name || 'Default Title'
-	};
-}
+      if (error) {
+        console.error(`Error fetching seller profile: ${error}`);
+        return;
+      }
 
-export default async function Page({ params }: PageProps) {
-	const { id } = await params;
+      setProfile(data);
+    };
 
-	const profile = await fetchSellerProfile(id);
+    fetchSellerProfile();
+  }, [id]);
 
-	return (
-		<main>
-			<section>
-				<Image
-					src={`/images${profile.image_url}`}
-					alt={`${profile.name} logo`}
-					width={200}
-					height={200}
-				/>
-				<article>
-					<h1>{profile.name}</h1>
-					<p>{profile.about}</p>
-					<ContactInfo title='Contact Information' phone={profile.phone} email={profile.email} />
-				</article>
-			</section>
-			<section>
-				<h2>Top Products</h2>
-				<Carousel params={{ qty: '6', profile: id }} />
-				<Link href={`/products?seller=${id}`}>See more...</Link>
-			</section>
-		</main>
-	);
-}
+  return (
+    <main>
+      {/* Pass the id prop to SellerCard */}
+      <section>
+        {profile && typeof id === 'string' && <SellerCard id={id} profile={profile} />}
+      </section>
+      <section>
+        <h2>Top Products</h2>
+        {profile && <Carousel params={{ qty: '6', profile: profile.id }} />}
+        {profile && <Link href={`/products?seller=${profile.id}`}>See more...</Link>}
+      </section>
+    </main>
+  );
+};
+
+export default Page;
