@@ -3,6 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { Suspense } from 'react';
 import { useSession, signOut } from "next-auth/react";
 import { fontHeading } from "@/app/ui/fonts";
 import ShopCart from "@/app/ui/layout/ShopCart";
@@ -32,7 +33,9 @@ export default function Header() {
       </Link>
 
       {/* Barra de búsqueda */}
-      <Search placeholder="Search products..." />
+			<Suspense fallback={<div>Loading...</div>}>
+				<Search placeholder='Search products...' />
+			</Suspense>
 
       {/* Mensaje de bienvenida */}
       {status === "authenticated" && (
