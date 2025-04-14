@@ -21,7 +21,7 @@ export default function ProductList({ products, onDetailClick }: ProductListProp
                 className="detail-button"
                 onClick={() => onDetailClick(product)}
               >
-                Detail
+                Edit
               </button>
             </li>
           ))}

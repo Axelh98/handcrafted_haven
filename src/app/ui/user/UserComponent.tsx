@@ -1,15 +1,12 @@
-"use client";
+'use client';
 
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
-import "./UserComponent.css";
+import { useState, useEffect } from "react";
 import { Product } from "@/app/lib/definitions";
-// import icono user from fontawesome
+import "./UserComponent.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-// bring modal
-import ProductEditModal from "@/app/ui/products/edit-modal/modal-product";
-// bring seller product list
+import ProductEditModal from "@/app/ui/products/modal/ProductEditModal";
 import ProductList from "@/app/ui/products/sellerProductList/sellerProductList";
 
 export default function UserComponent() {
@@ -19,7 +16,7 @@ export default function UserComponent() {
   const [showModal, setShowModal] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
-  const userId = session?.user?.id;
+  const userId = session?.user?.id 
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -48,6 +45,28 @@ export default function UserComponent() {
     return <p className="loading">Cargando...</p>;
   }
 
+  const handleDelete = async (productId: string) => {
+    try {
+      const response = await fetch(`/api/products/${productId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete product");
+      }
+
+      setProducts((prevProducts) =>
+        prevProducts.filter((product) => product.id !== productId)
+      );
+      setShowModal(false);
+    } catch (error) {
+      console.error("Error deleting product:", error);
+    }
+  };
+
   return (
     <div className="user-component-container">
       <div className="user-component-card">
@@ -58,11 +77,14 @@ export default function UserComponent() {
           </div>
           <div className="user-info-text">
             <p>Name: {session?.user?.name}</p>
-            <p>Email: {session?.user?.email}</p>{" "}
+            <p>Email: {session?.user?.email}</p>
           </div>
         </div>
+
         <div className="user-products-list">
-          <h2>Your Products</h2>
+          <div className="user-products-list-header">
+            <h2>Your Products</h2>
+          </div>
           {products.length > 0 ? (
             <ProductList
               products={products}
@@ -75,6 +97,7 @@ export default function UserComponent() {
             <p>You don't have any products yet.</p>
           )}
         </div>
+
         {showModal && selectedProduct && (
           <ProductEditModal
             product={selectedProduct}
@@ -109,6 +132,7 @@ export default function UserComponent() {
                 console.error("Error updating product:", error);
               }
             }}
+            onDelete={(id: string) => handleDelete(id)} 
           />
         )}
       </div>
