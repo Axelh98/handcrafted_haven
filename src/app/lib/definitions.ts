@@ -91,6 +91,11 @@ interface ProductSearch {
 	minPrice?: number;
 }
 
+interface BoundPrices {
+	min: number;
+	max: number;
+}
+
 export type {
 	User,
 	SellerProfile,
@@ -103,7 +108,8 @@ export type {
 	RawProductDetail,
 	ReviewForCard,
 	SellerProfileDetail,
-	ProductSearch
+	ProductSearch,
+	BoundPrices
 };
 
 // Signup form zod schema

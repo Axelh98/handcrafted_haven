@@ -15,8 +15,9 @@ export function useClientFilters(searchParams: ProductSearch) {
 			: { category: '', minPrice: 0, seller: '' };
 
 	const [filters, setFilters] = useState<ProductSearch>(initialState);
+	const [currentPrice, setCurrentPrice] = useState<number>(initialState.minPrice || 0);
 
-	const handleFilterChange = (event: ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
+	const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {
 		const { name, value } = event.target;
 
 		setFilters((prevFilters) => ({
@@ -25,14 +26,33 @@ export function useClientFilters(searchParams: ProductSearch) {
 		}));
 	};
 
+	const handleRangeChange = (event: ChangeEvent<HTMLInputElement>) => {
+		const value = parseInt(event.target.value);
+		setCurrentPrice(value);
+
+		debouncedUpdateFilters(value);
+	};
+
+	const debouncedUpdateFilters = useDebouncedCallback((value: number) => {
+		setFilters((prev) => ({
+			...prev,
+			minPrice: value
+		}));
+	}, 300);
+
 	const debouncedParamsChange = useDebouncedCallback(() => {
 		const cleanFilters = Object.fromEntries(Object.entries(filters).filter((entry) => !!entry[1]));
 		const newParams = new URLSearchParams(cleanFilters as Record<string, string>);
 
 		replace(`${pathname}?${newParams.toString()}`);
-	});
+	}, 300);
 
 	useEffect(debouncedParamsChange, [filters]);
 
-	return { handleFilterChange };
+	return {
+		handleFilterChange,
+		handleRangeChange,
+		currentPrice,
+		filters
+	};
 }
