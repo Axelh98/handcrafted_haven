@@ -1,0 +1,23 @@
+.main {
+	--columns: 1fr;
+
+	display: grid;
+	grid-template-columns: auto var(--columns) auto;
+	gap: 16px;
+}
+
+@media (min-width: 768px) {
+	.main {
+		--columns: 200px 1fr;
+		padding: 1rem;
+		gap: 10px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.main {
+		--columns: 350px 1fr;
+		padding: 1.5rem;
+		gap: 16px;
+	}
+}

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ProductForCard } from '../lib/definitions';
+import { RawProductForCard } from '../lib/definitions';
 
 export type Params = { qty: string; profile?: string };
 
 export function useClientBestRatedProducts(params: Params) {
-	const [products, setProducts] = useState<ProductForCard[]>([]);
+	const [products, setProducts] = useState<RawProductForCard[]>([]);
 
 	const searchParams = new URLSearchParams(params);
 

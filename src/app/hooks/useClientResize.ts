@@ -3,13 +3,11 @@
 import { useEffect, useState } from 'react';
 
 export function useClientResize(width: number) {
-	const [windowWidth, setWindowWidth] = useState(window.innerWidth ?? width);
+	const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (typeof window !== undefined) {
-				setWindowWidth(window.innerWidth);
-			}
+			setWindowWidth(window.innerWidth);
 		};
 
 		window.addEventListener('resize', handleResize);
@@ -19,5 +17,8 @@ export function useClientResize(width: number) {
 		};
 	}, []);
 
-	return { desktopWidth: matchMedia(`(min-width: ${width}px)`), windowWidth };
+	return {
+		desktopWidth: matchMedia(`(min-width: ${width}px)`),
+		windowWidth
+	};
 }

@@ -1,12 +1,17 @@
 .hero {
 	width: 100%;
 	background-color: var(--color-background-accent);
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
 }
 
 .heroImage {
 	width: 100%;
 	height: auto;
-	overflow: hidden; /* Asegura que la imagen no salga del contenedor */
+	overflow: hidden;
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
 }
 
 .heroImage img {
@@ -16,11 +21,11 @@
 }
 
 .textContainer {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
 	text-align: center;
+	grid-column: 1 / 2;
+	grid-row: 1 / 2;
+
+	place-content: center;
 }
 
 .title {

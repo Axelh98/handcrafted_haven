@@ -102,6 +102,18 @@ interface ProductForCard {
 	rate_avg: number;
 }
 
+interface ProductSearch {
+	query?: string;
+	category?: string;
+	seller?: string;
+	minPrice?: number;
+}
+
+interface BoundPrices {
+	min: number;
+	max: number;
+}
+
 export type {
 	User,
 	SellerProfile,
@@ -113,7 +125,9 @@ export type {
 	ProductForCard,
 	RawProductDetail,
 	ReviewForCard,
-	SellerProfileDetail
+	SellerProfileDetail,
+	ProductSearch,
+	BoundPrices
 };
 
 // Signup form zod schema

@@ -4,63 +4,58 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
 import { useActionState } from 'react';
 
-interface SearchState {
-  message: string | null;
-  errors: {
-    query?: string[];
-  };
-}
-
 export function useClientSearchFromAnywhere() {
-  const initialState: SearchState = { message: null, errors: {} };
-  const [state, formAction] = useActionState(searchFromHome, initialState);
+	const initialState: State = { message: '', errors: {} };
+	const [state, formAction] = useActionState(
+		searchFromHome as (state: State, payload: FormData) => Promise<State>,
+		initialState
+	);
 
-  return { state, formAction };
+	return { state, formAction };
 }
 
 export function useClientSearchInProducts() {
-  const searchParams = useSearchParams();
-  const pathname = usePathname();
-  const { replace } = useRouter();
+	const searchParams = useSearchParams();
+	const pathname = usePathname();
+	const { replace } = useRouter();
 
-	const [query, setQuery] = useState<string>(searchParams.get('q')?.toString() || '');
+	const [query, setQuery] = useState<string>(searchParams.get('query')?.toString() || '');
 	const isFirstInput = useRef<boolean>(true);
 
-  const handleSearch = useDebouncedCallback((term: string) => {
-    const params = new URLSearchParams(searchParams);
+	const handleSearch = useDebouncedCallback((term: string) => {
+		const params = new URLSearchParams(searchParams);
 
-    params.set('page', '1');
+		params.set('page', '1');
 
-    if (term) {
-      params.set('q', term);
-    } else {
-      params.delete('q');
-    }
+		if (term) {
+			params.set('query', term);
+		} else {
+			params.delete('query');
+		}
 
-    replace(`${pathname}?${params.toString()}`);
-  }, 300);
+		replace(`${pathname}?${params.toString()}`);
+	}, 300);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const newQuery = e.target.value;
-    const isProducts = pathname === '/products';
-    if (newQuery === ' ') return;
-    setQuery(newQuery);
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		const newQuery = e.target.value;
+		const isProducts = pathname === '/products';
+		if (newQuery === ' ') return;
+		setQuery(newQuery);
 
-    if (isProducts) handleSearch(newQuery);
-  };
+		if (isProducts) handleSearch(newQuery);
+	};
 
-  useEffect(() => {
-    if (isFirstInput.current) {
-      isFirstInput.current = query === '';
-      return;
-    }
+	useEffect(() => {
+		if (isFirstInput.current) {
+			isFirstInput.current = query === '';
+			return;
+		}
 
-    return;
-  }, [query]);
+		return;
+	}, [query]);
 
-  return {
-    query,
-    handleChange
-  };
+	return {
+		query,
+		handleChange
+	};
 }
-

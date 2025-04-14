@@ -1,45 +1,76 @@
 'use client';
 
-/* Import Styles*/
-import "./ProductListPage.css";
+import { useClientFilters } from '@/app/hooks/useClientFilters';
+import { useClientCategories } from '@/app/hooks/useClientCategories';
+import { useClientGetProfiles } from '@/app/hooks/useClientGetProfiles';
+import { BoundPrices, ProductSearch } from '@/app/lib/definitions';
+import styles from '@/app/ui/products/filters.module.css';
+import { formatCurrency } from '@/app/lib/utils';
 
-export default function FilterList() {
+type Props = {
+	currentParams: ProductSearch;
+	boundPrices: BoundPrices;
+};
 
-    return (
-        <div className="filters">
-        <div className="filter-group">
-          <label className="filter-label" htmlFor="category">
-            Category
-          </label>
-          <select className="filter-select" id="category">
-            <option value="all">All</option>
-            <option value="electronics">Electronics</option>
-            <option value="fashion">Fashion</option>
-            <option value="home">Home</option>
-          </select>
-        </div>
-        <div className="filter-group">
-          <label className="filter-label" htmlFor="price-range">
-            Price Range
-          </label>
-          <select className="filter-select" id="price-range">
-            <option value="all">All</option>
-            <option value="0-50">$0 - $50</option>
-            <option value="50-100">$50 - $100</option>
-            <option value="100-200">$100 - $200</option>
-          </select>
-        </div>
-        <div className="filter-group">
-          <label className="filter-label">Availability</label>
-          <div className="filter-checkbox">
-            <input type="checkbox" id="in-stock" />
-            <label htmlFor="in-stock">In Stock</label>
-          </div>
-          <div className="filter-checkbox">
-            <input type="checkbox" id="out-of-stock" />
-            <label htmlFor="out-of-stock">Out of Stock</label>
-          </div>
-        </div>
-      </div>
-    )
-} 
+export default function FilterList({ currentParams, boundPrices }: Props) {
+	const { handleFilterChange, handleRangeChange, currentPrice, filters } =
+		useClientFilters(currentParams);
+	const { categories } = useClientCategories();
+	const { profiles } = useClientGetProfiles();
+
+	return (
+		<form className={styles.filters}>
+			<div className={styles.filterGroup}>
+				<label className={styles.filterLabel} htmlFor='category'>
+					Select a category:
+				</label>
+				<select
+					className={styles.filterSelect}
+					name='category'
+					id='category'
+					onChange={handleFilterChange}
+					value={filters.category || ''}>
+					<option value=''>---</option>
+					{categories.map(({ id, name }) => (
+						<option key={id} value={id}>
+							{name}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className={styles.filterGroup}>
+				<label className={styles.filterLabel} htmlFor='seller'>
+					Select a seller:
+				</label>
+				<select
+					className={styles.filterSelect}
+					name='seller'
+					id='seller'
+					onChange={handleFilterChange}
+					value={filters.seller || ''}>
+					<option value=''>---</option>
+					{profiles.map(({ id, name }) => (
+						<option key={id} value={id}>
+							{name}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className={styles.filterGroup}>
+				<label className={styles.filterLabel} htmlFor='minPrice'>
+					Search by price:
+				</label>
+				<input
+					type='range'
+					name='minPrice'
+					id='minPrice'
+					min={`${boundPrices.min}`}
+					max={`${boundPrices.max}`}
+					value={currentPrice}
+					onChange={handleRangeChange}
+				/>{' '}
+				{formatCurrency(currentPrice)}
+			</div>
+		</form>
+	);
+}

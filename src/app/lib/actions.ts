@@ -15,12 +15,12 @@ const ReviewSchema = z.object({
 });
 
 export type State = {
-	errors?: {
+	errors: {
 		query?: string[];
 		name?: string[];
 		content?: string[];
 	};
-	message?: string | null;
+	message: string;
 };
 
 export async function searchFromHome(prevState: State, formData: FormData) {
@@ -37,7 +37,7 @@ export async function searchFromHome(prevState: State, formData: FormData) {
 
 	const { query } = validatedFields.data;
 
-	redirect(`/products?q=${query}`);
+	redirect(`/products?query=${query}`);
 }
 
 export async function postReview(id: string, prevState: State, formData: FormData) {
