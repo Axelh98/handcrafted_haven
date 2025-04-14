@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchBestRatedProducts } from '@/app/lib/data';
-import { ProductForCard } from '@/app/lib/definitions';
+import { RawProductForCard } from '@/app/lib/definitions';
 
 export async function GET(req: NextRequest) {
 	if (req.headers.get('content-type') !== 'application/json') {
@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
 	const qty = parseInt(searchParams.get('qty')!);
 	const profile = searchParams.get('profile') || '';
 
-	const data: ProductForCard[] = await fetchBestRatedProducts(qty || 0, profile);
+	const data: RawProductForCard[] = await fetchBestRatedProducts(qty || 0, profile);
 
 	return NextResponse.json(data);
 }
