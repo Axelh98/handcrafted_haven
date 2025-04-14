@@ -36,6 +36,7 @@ export default async function Page({ params }: PageProps) {
 					id={id}
 					title={product.title}
 					description={product.description}
+					image_url={product.image}
 					price={product.price}
 					categoryId={product.category_id}
 					category={product.category}

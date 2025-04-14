@@ -3,6 +3,9 @@ import { fontBody } from './ui/fonts';
 import Header from './ui/layout/Header';
 import './globals.css';
 import { Providers } from '@/app/ui/providers';
+import { CartProvider } from '@/app/context/CartContext';
+import Cart from './ui/cart/Cart';
+
 
 export const metadata: Metadata = {
   title: {
@@ -24,9 +27,13 @@ export default function RootLayout({
 
 
         <Providers>
-          <Header />
-            {children}
+          <CartProvider>
+            <Header/>
+              {children}
+
+          </CartProvider>
         </Providers>
+        
       </body>
     </html>
   );
