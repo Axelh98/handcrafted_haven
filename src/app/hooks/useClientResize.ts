@@ -3,22 +3,26 @@
 import { useEffect, useState } from 'react';
 
 export function useClientResize(width: number) {
-	const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState<number>(0); // Inicializa con un valor predeterminado
 
-	useEffect(() => {
-		const handleResize = () => {
-			setWindowWidth(window.innerWidth);
-		};
+  useEffect(() => {
+    // Esto se ejecuta solo en el cliente
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
 
-		window.addEventListener('resize', handleResize);
+    // Establece el tamaño de la ventana al cargar
+    setWindowWidth(window.innerWidth);
 
-		return () => {
-			window.removeEventListener('resize', handleResize);
-		};
-	}, []);
+    window.addEventListener('resize', handleResize);
 
-	return {
-		desktopWidth: matchMedia(`(min-width: ${width}px)`),
-		windowWidth
-	};
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Este efecto se ejecuta solo una vez, cuando el componente se monta en el cliente
+
+  return {
+    desktopWidth: windowWidth >= width, // Esto compara el tamaño actual con el umbral proporcionado
+    windowWidth
+  };
 }
