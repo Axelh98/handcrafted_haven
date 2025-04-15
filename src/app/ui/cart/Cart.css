@@ -161,3 +161,34 @@
 .checkout-button:hover {
   background-color: #333;
 }
+
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.message {
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  background-color: #4caf50;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
