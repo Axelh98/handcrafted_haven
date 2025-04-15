@@ -4,12 +4,12 @@
 	display: grid;
 	grid-template-columns: auto var(--columns) auto;
 	gap: 16px;
+	padding: 1rem;
 }
 
 @media (min-width: 768px) {
 	.main {
 		--columns: 200px 1fr;
-		padding: 1rem;
 		gap: 10px;
 	}
 }

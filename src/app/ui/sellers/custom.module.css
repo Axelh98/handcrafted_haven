@@ -1,0 +1,14 @@
+.customGrid,
+.customError {
+	grid-column: 2 / 3;
+}
+
+.customGrid {
+	gap: 10px;
+}
+
+.customError {
+	color: black;
+	font-weight: bold;
+	text-transform: uppercase;
+}

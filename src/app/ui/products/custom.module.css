@@ -1,0 +1,21 @@
+.customGrid,
+.customError {
+	grid-column: 2 / 3;
+}
+
+.customGrid {
+	gap: 10px;
+}
+
+.customError {
+	color: black;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+@media (min-width: 768px) {
+	.customGrid,
+	.customError {
+		grid-column: 3 / 5;
+	}
+}

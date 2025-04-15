@@ -1,11 +1,12 @@
 .container {
+	width: 100%;
 	max-width: 300px;
 	margin: 0 auto;
 }
 
 .carousel-slide {
 	background-color: #ffffff; /* bg-white */
-	height: 450px;
+	height: 380px;
 	color: #000000; /* text-black */
 	display: flex;
 	flex-direction: column;
