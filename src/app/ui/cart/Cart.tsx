@@ -10,6 +10,7 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useCart } from "@/app/context/CartContext";
+import CheckoutButton from "@/app/ui/cart/checkout/checkoutButton";
 
 export default function Cart() {
   const { cart, updateQuantity, removeFromCart } = useCart();
@@ -32,11 +33,14 @@ export default function Cart() {
         <div className="cart-content">
           <div className="cart-items">
             {cart.map((item) => (
-              
               <div className="cart-item" key={item.id}>
                 <div className="item-image">
                   <img
-                    src={item.image_url? `/images${item.image_url}`: "/objects/vase.svg"}
+                    src={
+                      item.image_url
+                        ? `/images${item.image_url}`
+                        : "/objects/vase.svg"
+                    }
                     alt={item.name}
                   />
                 </div>
@@ -104,10 +108,7 @@ export default function Cart() {
           </div>
 
           <div className="checkout-button-container">
-            <button type="button" className="checkout-button">
-              Checkout
-              <FontAwesomeIcon icon={faArrowRight} className="checkout-icon" />
-            </button>
+            <CheckoutButton />
           </div>
         </div>
       </div>
