@@ -1,11 +1,10 @@
-'use-client';
-// import login
-import SignupForm from '@/app/ui/singup/SingUpForm'
+import SignupForm from '@/app/ui/singup/SingUpForm';
+import { Metadata } from 'next';
 
-export default function Login() {
-  return (
-    <>
-      <SignupForm />
-    </>
-  )
+export const metadata: Metadata = {
+	title: 'Sign Up'
+};
+
+export default function Page() {
+	return <SignupForm />;
 }
