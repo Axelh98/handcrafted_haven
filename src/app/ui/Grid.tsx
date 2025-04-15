@@ -1,11 +1,11 @@
 import classnames from 'classnames';
 import GridItem from './GridItem';
-import { RawProductForCard } from '@/app/lib/definitions';
+import { RawProductForCard, SellerProfile } from '@/app/lib/definitions';
 import styles from '@/app/ui/grid.module.css';
 
 type Props = {
-	items: RawProductForCard[];
-	customStyle: string;
+	items: RawProductForCard[] | SellerProfile[];
+	customStyle?: string;
 };
 
 export default function Grid({ items, customStyle }: Props) {

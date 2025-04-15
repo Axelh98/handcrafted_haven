@@ -3,12 +3,12 @@
 import { useClientFilters } from '@/app/hooks/useClientFilters';
 import { useClientCategories } from '@/app/hooks/useClientCategories';
 import { useClientGetProfiles } from '@/app/hooks/useClientGetProfiles';
-import { BoundPrices, ProductSearch } from '@/app/lib/definitions';
+import { BoundPrices, Search } from '@/app/lib/definitions';
 import styles from '@/app/ui/products/filters.module.css';
 import { formatCurrency } from '@/app/lib/utils';
 
 type Props = {
-	currentParams: ProductSearch;
+	currentParams: Search;
 	boundPrices: BoundPrices;
 };
 

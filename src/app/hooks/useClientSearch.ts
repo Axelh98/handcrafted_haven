@@ -40,11 +40,11 @@ export function useClientSearchInProducts() {
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 		const newQuery = e.target.value;
-		const isProducts = pathname === '/products';
+		const isProdsOrSells = pathname === '/products' || pathname === '/sellers';
 		if (newQuery === ' ') return;
 		setQuery(newQuery);
 
-		if (isProducts) handleSearch(newQuery);
+		if (isProdsOrSells) handleSearch(newQuery);
 	};
 
 	useEffect(() => {

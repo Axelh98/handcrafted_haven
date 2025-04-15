@@ -3,9 +3,9 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useDebouncedCallback } from 'use-debounce';
-import { ProductSearch } from '../lib/definitions';
+import { Search } from '../lib/definitions';
 
-export function useClientFilters(searchParams: ProductSearch) {
+export function useClientFilters(searchParams: Search) {
 	const pathname = usePathname();
 	const { replace } = useRouter();
 
@@ -14,7 +14,7 @@ export function useClientFilters(searchParams: ProductSearch) {
 			? searchParams
 			: { category: '', minPrice: 0, seller: '' };
 
-	const [filters, setFilters] = useState<ProductSearch>(initialState);
+	const [filters, setFilters] = useState<Search>(initialState);
 	const [currentPrice, setCurrentPrice] = useState<number>(initialState.minPrice || 0);
 
 	const handleFilterChange = (event: ChangeEvent<HTMLSelectElement>) => {

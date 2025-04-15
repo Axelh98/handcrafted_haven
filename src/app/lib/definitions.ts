@@ -102,7 +102,7 @@ interface ProductForCard {
 	rate_avg: number;
 }
 
-interface ProductSearch {
+interface Search {
 	query?: string;
 	category?: string;
 	seller?: string;
@@ -126,7 +126,7 @@ export type {
 	RawProductDetail,
 	ReviewForCard,
 	SellerProfileDetail,
-	ProductSearch,
+	Search,
 	BoundPrices
 };
 

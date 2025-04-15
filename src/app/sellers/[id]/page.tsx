@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { fetchSellerProfile } from '@/app/lib/data';
 import ContactInfo from '@/app/ui/sellers/profile/ContactInfo';
 import Carousel from '@/app/ui/Carousel';
+import styles from '@/app/ui/sellers/profile/profile.module.css';
 
 type PageProps = { params: Promise<{ id: string }> };
 
@@ -22,8 +23,8 @@ export default async function Page({ params }: PageProps) {
 	const profile = await fetchSellerProfile(id);
 
 	return (
-		<main>
-			<section>
+		<main className={styles.main}>
+			<section className={styles.presentation}>
 				<Image
 					src={`/images${profile.image_url}`}
 					alt={`${profile.name} logo`}
@@ -36,10 +37,14 @@ export default async function Page({ params }: PageProps) {
 					<ContactInfo title='Contact Information' phone={profile.phone} email={profile.email} />
 				</article>
 			</section>
-			<section>
-				<h2>Top Products</h2>
+			<section className={styles.prodCar}>
+				<article className={styles.commandLabel}>
+					<h2>Top Products</h2>
+					<div>
+						<Link href={`/products?seller=${id}`}>See more</Link>
+					</div>
+				</article>
 				<Carousel params={{ qty: '6', profile: id }} />
-				<Link href={`/products?seller=${id}`}>See more...</Link>
 			</section>
 		</main>
 	);
