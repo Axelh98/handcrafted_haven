@@ -46,18 +46,20 @@ body {
 	color: var(--color-accent3);
 
 	width: 100%;
+	min-height: 100vh;
 
-	display: grid;
-	grid-template-columns: auto 1fr auto;
+	display: flex;
+	flex-direction: column;
 }
 
 header,
+main,
 footer {
-	grid-column: 1 / 4;
+	width: 100%;
 }
 
 main {
-	grid-column: 2 / 3;
+	flex-grow: 1;
 }
 
 h1,
