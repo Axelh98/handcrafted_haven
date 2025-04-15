@@ -1,0 +1,24 @@
+.footer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	padding-block: 1rem;
+	margin-top: 4rem;
+
+	color: black;
+	background-color: var(--color-accent1);
+}
+
+.footer p {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 1rem;
+}
+
+@media (min-width: 768px) {
+	.footer p {
+		flex-direction: row;
+	}
+}
