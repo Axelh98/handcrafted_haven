@@ -1,4 +1,4 @@
-'use client';  
+'use client';
 
 import {
   createContext,
@@ -12,7 +12,7 @@ export type CartItem = {
   id: string;
   name: string;
   price: number;
-	image_url: string;
+  image_url: string;
   quantity: number;
 };
 
@@ -22,12 +22,12 @@ type CartContextType = {
   removeFromCart: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
+  totalItems: number; 
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider = ({ children }: { children: ReactNode }) => {
-  // Cargar el carrito desde localStorage o usar un array vacío por defecto
   const [cart, setCart] = useState<CartItem[]>(() => {
     if (typeof window !== "undefined") {
       const savedCart = localStorage.getItem("cart");
@@ -37,11 +37,13 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   });
 
   useEffect(() => {
-    console.log("Cart updated, saving to localStorage:", cart);
     if (typeof window !== "undefined") {
       localStorage.setItem("cart", JSON.stringify(cart));
     }
   }, [cart]);
+
+  // Calculamos la cantidad total de productos
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
 
   const addToCart = (item: Omit<CartItem, "quantity">) => {
     console.log("Adding item to cart:", item);
@@ -55,6 +57,8 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
       return [...prev, { ...item, quantity: 1 }];
     });
   };
+  
+
   const removeFromCart = (id: string) => {
     setCart((prev) => prev.filter((item) => item.id !== id));
   };
@@ -71,7 +75,14 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, updateQuantity, clearCart }}
+      value={{
+        cart,
+        totalItems, 
+        addToCart,
+        removeFromCart,
+        updateQuantity,
+        clearCart,
+      }}
     >
       {children}
     </CartContext.Provider>
